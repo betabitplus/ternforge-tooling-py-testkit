@@ -46,4 +46,6 @@ jobs:
           uv run --no-sync pytest
           rm -rf build dist
           uv build
-          python -m pip install --quiet --disable-pip-version-check dist/*.whl
+          uv venv --python 3.13 "$RUNNER_TEMP/install"
+          uv pip install --python "$RUNNER_TEMP/install/bin/python" dist/*.whl
+          "$RUNNER_TEMP/install/bin/python" -c "import importlib.metadata; print(importlib.metadata.version('py-lib-testkit'))"

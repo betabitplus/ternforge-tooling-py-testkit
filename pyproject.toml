@@ -4,19 +4,19 @@ build-backend = "hatchling.build"
 
 [project]
 name = "py-lib-testkit"
-version = "1.0.0"
+version = "1.0.1"
 requires-python = ">=3.13"
 dependencies = [
   "ipython>=9",
   "nest-asyncio>=1.6",
   "pillow>=11",
-  "py-lib-runtime",
+  "py-lib-runtime @ git+https://github.com/betabitplus/ternforge-tooling-py-runtime.git@v1.0.0",
   "pytest>=9",
   "rich>=14",
 ]
 
-[tool.uv.sources]
-py-lib-runtime = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git", tag = "v1.0.0" }
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [dependency-groups]
 dev = ["ruff>=0.15"]

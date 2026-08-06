@@ -82,7 +82,9 @@ def test_public_exports_include_all_downstream_config_helpers() -> None:
     assert py_lib_testkit.get_repo_root is get_repo_root
 
 
-def test_multipart_signature_uses_consuming_repository_prefix(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_multipart_signature_uses_consuming_repository_prefix(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     _write_project(tmp_path)
     monkeypatch.chdir(tmp_path)
     assert multipart_signature_prefix() == b"SAMPLE_LIB_MULTIPART_SIGNATURE:"

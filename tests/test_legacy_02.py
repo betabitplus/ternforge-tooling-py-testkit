@@ -36,23 +36,18 @@ def test_project_config_loads_optional_tooling_and_runtime_policy(
     tmp_path: Path,
 ) -> None:
     tmp_path.joinpath("pyproject.toml").write_text(
-        "\n".join(
-            [
-                "[project]",
-                'name = "sample-lib"',
-                'version = "1.2.3"',
-                "",
-                "[tool.ternforge]",
-                'primary_package = "sample_lib"',
-                'package_names = [ "sample_lib" ]',
-                'library_lane = "standard-lib"',
-                'env_prefix = "SAMPLE_LIB"',
-                "",
-                "[tool.py_lib_runtime.logging]",
-                'default_local_level = "INFO"',
-                'quiet_module_names = [ "httpx", "urllib3" ]',
-                "",
-            ]
+        (
+            "[project]\n"
+            'name = "sample-lib"\n'
+            'version = "1.2.3"\n'
+            "\n[tool.ternforge]\n"
+            'primary_package = "sample_lib"\n'
+            'package_names = [ "sample_lib" ]\n'
+            'library_lane = "standard-lib"\n'
+            'env_prefix = "SAMPLE_LIB"\n'
+            "\n[tool.py_lib_runtime.logging]\n"
+            'default_local_level = "INFO"\n'
+            'quiet_module_names = [ "httpx", "urllib3" ]\n'
         ),
         encoding="utf-8",
     )
@@ -117,16 +112,12 @@ def test_project_config_rejects_missing_pyproject(tmp_path: Path) -> None:
 
 def test_project_config_rejects_missing_tooling_table(tmp_path: Path) -> None:
     tmp_path.joinpath("pyproject.toml").write_text(
-        "\n".join(
-            [
-                "[project]",
-                'name = "sample-lib"',
-                'version = "1.2.3"',
-                "",
-                "[tool.ruff]",
-                'target-version = "py313"',
-                "",
-            ]
+        (
+            "[project]\n"
+            'name = "sample-lib"\n'
+            'version = "1.2.3"\n'
+            "\n[tool.ruff]\n"
+            'target-version = "py313"\n'
         ),
         encoding="utf-8",
     )
@@ -143,18 +134,14 @@ def test_project_config_rejects_missing_tooling_table(tmp_path: Path) -> None:
 def _write_minimal_pyproject(project_root: Path) -> None:
     """Write a minimal py-lib tooling manifest for config discovery tests."""
     project_root.joinpath("pyproject.toml").write_text(
-        "\n".join(
-            [
-                "[project]",
-                'name = "sample-lib"',
-                'version = "1.2.3"',
-                "",
-                "[tool.ternforge]",
-                'primary_package = "sample_lib"',
-                'package_names = [ "sample_lib" ]',
-                'env_prefix = "SAMPLE_LIB"',
-                "",
-            ]
+        (
+            "[project]\n"
+            'name = "sample-lib"\n'
+            'version = "1.2.3"\n'
+            "\n[tool.ternforge]\n"
+            'primary_package = "sample_lib"\n'
+            'package_names = [ "sample_lib" ]\n'
+            'env_prefix = "SAMPLE_LIB"\n'
         ),
         encoding="utf-8",
     )

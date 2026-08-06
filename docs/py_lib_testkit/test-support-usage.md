@@ -110,4 +110,4 @@ from py_lib_testkit import (
 ## 1.4 Runnable Examples
 
 - [test_support_demo.py](../../examples/py_lib_testkit/test_support_demo.py)
-  Run with: `uv run python packages/py-lib-testkit/examples/py_lib_testkit/test_support_demo.py`
+  Run with: `uv run python examples/py_lib_testkit/test_support_demo.py`

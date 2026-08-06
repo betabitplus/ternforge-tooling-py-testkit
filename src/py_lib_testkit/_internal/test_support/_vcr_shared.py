@@ -16,6 +16,7 @@ How:
 from __future__ import annotations
 
 import base64
+import binascii
 import hashlib
 import json
 from collections.abc import Callable, Iterable
@@ -143,7 +144,7 @@ def decode_base64_bytes(value: str) -> bytes | None:
 
     try:
         return base64.b64decode(normalized, validate=True)
-    except Exception:
+    except (binascii.Error, ValueError):
         return None
 
 
@@ -193,12 +194,16 @@ def get_header_value(request: Any, name: str) -> str:
     """Read one request header case-insensitively from a VCR-style request."""
     headers = getattr(request, "headers", {}) or {}
     for key, value in _headers_items(headers):
-        if str(key).lower() != name.lower():
-            continue
-        if isinstance(value, list | tuple):
-            return str(value[0]) if value else ""
-        return str(value)
+        if str(key).lower() == name.lower():
+            return _header_text(value)
     return ""
+
+
+def _header_text(value: Any) -> str:
+    """Return one normalized request-header value."""
+    if isinstance(value, list | tuple):
+        return str(value[0]) if value else ""
+    return str(value)
 
 
 def extract_boundary(content_type: str) -> str | None:
@@ -235,7 +240,8 @@ def extract_single_part_content(body: bytes, boundary: str) -> bytes | None:
         return None
 
     content_end = end
-    if body[content_end - 2 : content_end] == b"\r\n":
+    trailing_start = content_end - 2
+    if body[trailing_start:content_end] == b"\r\n":
         content_end -= 2
     return body[content_start:content_end]
 
@@ -272,6 +278,7 @@ def png_pixels_digest(png_bytes: bytes) -> tuple[tuple[int, int], str, bytes]:
 
 
 def _is_json_request(request: Any) -> bool:
+    """Return whether one request declares a JSON content type."""
     content_type = get_header_value(request, "content-type").lower()
     return "application/json" in content_type
 
@@ -299,13 +306,14 @@ def _decode_multipart_signature_cache(body: bytes) -> dict[str, Any] | None:
     prefix = multipart_signature_prefix()
     if not body.startswith(prefix):
         return None
+    prefix_length = len(prefix)
     try:
-        payload = body[len(prefix) :].decode(
+        payload = body[prefix_length:].decode(
             "utf-8",
             errors="strict",
         )
         parsed = json.loads(payload)
-    except Exception:
+    except (UnicodeDecodeError, json.JSONDecodeError):
         return None
     return parsed if isinstance(parsed, dict) else None
 
@@ -315,31 +323,47 @@ def _normalize_json_value(
     *,
     string_normalizer: Callable[[str], Any] | None,
 ) -> Any:
-    normalized: Any = value
+    """Normalize one JSON-compatible value recursively."""
     if isinstance(value, dict):
-        normalized_media = _normalize_inline_media_dict(
-            value,
-            string_normalizer=string_normalizer,
-        )
-        if normalized_media is not None:
-            normalized = normalized_media
-        else:
-            normalized = {
-                key: _normalize_json_value(item, string_normalizer=string_normalizer)
-                for key, item in sorted(value.items())
-            }
-    elif isinstance(value, list):
-        normalized = [
+        return _normalize_json_mapping(value, string_normalizer=string_normalizer)
+    if isinstance(value, list):
+        return [
             _normalize_json_value(item, string_normalizer=string_normalizer)
             for item in value
         ]
-    elif isinstance(value, str):
-        normalized_media = _normalize_embedded_media_string(value)
-        if normalized_media is not None:
-            normalized = normalized_media
-        elif string_normalizer is not None:
-            normalized = string_normalizer(value)
-    return normalized
+    if isinstance(value, str):
+        return _normalize_json_string(value, string_normalizer=string_normalizer)
+    return value
+
+
+def _normalize_json_mapping(
+    value: dict[Any, Any],
+    *,
+    string_normalizer: Callable[[str], Any] | None,
+) -> Any:
+    """Normalize one JSON mapping, including inline media payloads."""
+    normalized_media = _normalize_inline_media_dict(
+        value,
+        string_normalizer=string_normalizer,
+    )
+    if normalized_media is not None:
+        return normalized_media
+    return {
+        key: _normalize_json_value(item, string_normalizer=string_normalizer)
+        for key, item in sorted(value.items())
+    }
+
+
+def _normalize_json_string(
+    value: str,
+    *,
+    string_normalizer: Callable[[str], Any] | None,
+) -> Any:
+    """Normalize one JSON string, including embedded media payloads."""
+    normalized_media = _normalize_embedded_media_string(value)
+    if normalized_media is not None:
+        return normalized_media
+    return string_normalizer(value) if string_normalizer is not None else value
 
 
 def _normalize_inline_media_dict(
@@ -347,6 +371,7 @@ def _normalize_inline_media_dict(
     *,
     string_normalizer: Callable[[str], Any] | None,
 ) -> dict[str, Any] | None:
+    """Normalize an inline-media mapping when its payload is valid."""
     data = value.get("data")
     mime_type = value.get("mimeType") or value.get("mime_type")
     if not isinstance(data, str) or not isinstance(mime_type, str):
@@ -369,6 +394,7 @@ def _normalize_inline_media_dict(
 
 
 def _normalize_embedded_media_string(value: str) -> dict[str, Any] | None:
+    """Normalize a media data URL embedded in a JSON string."""
     data_url = parse_data_url(value)
     if data_url is not None:
         mime_type, decoded = data_url
@@ -381,6 +407,7 @@ def _describe_dict_difference(
     right: dict[Any, Any],
     path: str,
 ) -> str:
+    """Describe the first semantic difference between two mappings."""
     left_keys = set(left)
     right_keys = set(right)
     if left_keys != right_keys:
@@ -399,6 +426,7 @@ def _describe_dict_difference(
 
 
 def _describe_list_difference(left: list[Any], right: list[Any], path: str) -> str:
+    """Describe the first semantic difference between two lists."""
     if len(left) != len(right):
         return f"{path}: length {len(left)} != {len(right)}"
 
@@ -413,18 +441,21 @@ def _describe_list_difference(left: list[Any], right: list[Any], path: str) -> s
 
 
 def _summarize_value(value: Any) -> str:
+    """Render one value as a bounded diagnostic fragment."""
     if isinstance(value, str):
         return repr(_truncate_text(value))
     return _truncate_text(repr(value))
 
 
 def _truncate_text(text: str, limit: int = 120) -> str:
+    """Truncate diagnostic text while preserving its original length."""
     if len(text) <= limit:
         return text
     return f"{text[:limit]}...<{len(text)} chars>"
 
 
 def _headers_items(headers: Any) -> Iterable[tuple[Any, Any]]:
+    """Return header items from mapping-like request headers."""
     items = getattr(headers, "items", None)
     if callable(items):
         return items()
@@ -432,6 +463,7 @@ def _headers_items(headers: Any) -> Iterable[tuple[Any, Any]]:
 
 
 def _infer_boundary_from_body(body: bytes) -> bytes | None:
+    """Infer a multipart boundary from the first body line."""
     if not body.startswith(b"--"):
         return None
     first_line_end = body.find(b"\r\n")

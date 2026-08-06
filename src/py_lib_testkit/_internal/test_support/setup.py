@@ -23,7 +23,6 @@ import asyncio
 import os
 from collections.abc import Awaitable
 from pathlib import Path
-from typing import TypeVar
 
 from py_lib_runtime import (
     build_logging_settings,
@@ -33,15 +32,12 @@ from py_lib_runtime import (
 
 from py_lib_testkit._internal.config import get_project_tooling_config
 
-_T = TypeVar("_T")
-
-
 # ================================================================================
 # Setup Entry Points
 # ================================================================================
 
 
-def run_async(awaitable: Awaitable[_T]) -> _T:
+def run_async[T](awaitable: Awaitable[T]) -> T:
     """Run one coroutine in normal and already-running loop contexts."""
     _apply_nest_asyncio_if_available()
     try:

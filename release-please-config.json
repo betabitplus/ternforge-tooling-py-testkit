@@ -6,7 +6,7 @@
   "changelog-path": "CHANGELOG.md",
   "packages": {
     ".": {
-      "component": "ternforge-tooling-py-testkit",
+      "component": "py-lib-testkit",
       "release-type": "simple",
       "extra-files": [
         {

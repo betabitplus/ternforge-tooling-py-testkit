@@ -1,0 +1,33 @@
+_commit: v1.2.3
+_src_path: https://github.com/betabitplus/ternforge-template-py-library.git
+author_email: 8123085+betabitplus@users.noreply.github.com
+author_name: betabitplus
+ci_playwright_browsers: []
+ci_policy_command: ''
+config_class_name: PyLibTestkitConfig
+copyright_year: '2026'
+e2e_slices:
+-   name: public-boundary
+    path: tests/__PACKAGE_NAME__/e2e/public_boundary
+env_prefix: PY_LIB_TESTKIT
+error_class_name: PyLibTestkitError
+github_owner: betabitplus
+gitignore_extra_patterns: []
+initial_version: 1.0.1
+library_lane: standard-lib
+package_name: py_lib_testkit
+pip_audit_waivers: []
+preserve_pyproject_on_update: true
+project_description: Reusable Python library test helpers, configuration readers,
+    and active-loop support.
+project_name: py-lib-testkit
+project_slug: py-lib-testkit
+project_title: Py Lib Testkit
+project_title_lower: py lib testkit
+renovate_uv_ignored_updates: []
+repository_name: ternforge-tooling-py-testkit
+runtime_audit_exclude_package: py-lib-runtime
+workspace_python_paths:
+- src
+workspace_test_paths:
+- tests

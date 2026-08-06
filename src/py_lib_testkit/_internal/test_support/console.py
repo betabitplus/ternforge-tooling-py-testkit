@@ -19,7 +19,7 @@ from io import StringIO
 from pathlib import Path
 from typing import Any, override
 
-from IPython import get_ipython
+from IPython.core.getipython import get_ipython
 from IPython.display import HTML, Image, display
 from rich.console import Console
 
@@ -253,39 +253,42 @@ class DemoConsole(Console):
     ) -> str | None:
         """Return pretty JSON text for dict/list or JSON string input."""
         if isinstance(value, str):
-            candidate = value.strip()
-            if not candidate or candidate[0] not in {"{", "["}:
-                return None
-            try:
-                parsed = json_module.loads(candidate)
-            except ValueError:
-                return None
-            if not isinstance(parsed, dict | list):
-                return None
-            return json_module.dumps(
-                parsed,
-                indent=options.indent,
-                skipkeys=options.skip_keys,
-                ensure_ascii=options.ensure_ascii,
-                check_circular=options.check_circular,
-                allow_nan=options.allow_nan,
-                default=options.default,
-                sort_keys=options.sort_keys,
+            parsed = self._parse_json_container(value)
+            return (
+                self._dump_json(parsed, options=options) if parsed is not None else None
             )
-
         if isinstance(value, dict | list):
-            return json_module.dumps(
-                value,
-                indent=options.indent,
-                skipkeys=options.skip_keys,
-                ensure_ascii=options.ensure_ascii,
-                check_circular=options.check_circular,
-                allow_nan=options.allow_nan,
-                default=options.default,
-                sort_keys=options.sort_keys,
-            )
-
+            return self._dump_json(value, options=options)
         return None
+
+    def _parse_json_container(self, value: str) -> dict[str, Any] | list[Any] | None:
+        """Parse one JSON string when it contains an object or array."""
+        candidate = value.strip()
+        if not candidate or candidate[0] not in {"{", "["}:
+            return None
+        try:
+            parsed = json_module.loads(candidate)
+        except ValueError:
+            return None
+        return parsed if isinstance(parsed, dict | list) else None
+
+    def _dump_json(
+        self,
+        value: dict[Any, Any] | list[Any],
+        *,
+        options: _JsonRenderOptions,
+    ) -> str:
+        """Serialize one JSON container with the configured display options."""
+        return json_module.dumps(
+            value,
+            indent=options.indent,
+            skipkeys=options.skip_keys,
+            ensure_ascii=options.ensure_ascii,
+            check_circular=options.check_circular,
+            allow_nan=options.allow_nan,
+            default=options.default,
+            sort_keys=options.sort_keys,
+        )
 
     # =================================================================================
     # Docstring Utilities

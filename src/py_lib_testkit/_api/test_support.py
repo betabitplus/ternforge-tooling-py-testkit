@@ -1,4 +1,4 @@
-"""Public shared test-support facade for py-lib-tooling.
+"""Public shared test-support facade for py-lib-testkit.
 
 Why:
     Keeps reusable test/demo helpers on the supported root package boundary

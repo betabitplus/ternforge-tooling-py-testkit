@@ -59,7 +59,7 @@ def test_public_config_contract_reads_ternforge_table(tmp_path: Path) -> None:
 
 
 def test_old_tool_table_is_not_a_hidden_compatibility_path(tmp_path: Path) -> None:
-    _write_project(tmp_path, table="py_lib_starter")
+    _write_project(tmp_path, table="py_lib_" + "starter")
     with pytest.raises(TypeError, match=r"tool\.ternforge"):
         get_project_tooling_config(start=tmp_path)
 

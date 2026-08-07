@@ -10,7 +10,7 @@ dependencies = [
   "ipython>=9",
   "nest-asyncio>=1.6",
   "pillow>=11",
-  "py-lib-runtime @ git+https://github.com/betabitplus/ternforge-tooling-py-runtime.git@v1.0.0",
+  "py-lib-runtime @ git+https://github.com/betabitplus/ternforge-tooling-py-runtime.git@v1.1.0",
   "pytest>=9",
   "rich>=14",
 ]

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.4](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.3...v1.1.4) (2026-08-08)
+
+
+### Bug Fixes
+
+* restore runtime uv source ownership ([#19](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/19)) ([80d5ba8](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/80d5ba8ef1d9911144f53152c5d1f7be83d8884a))
+
 ## [1.1.3](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.2...v1.1.3) (2026-08-08)
 
 

@@ -1568,8 +1568,8 @@ wheels = [
 
 [[package]]
 name = "py-lib-runtime"
-version = "1.1.1"
-source = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.1#4bcfbb5d7afc3b5457733cf19369bd796da8a5cf" }
+version = "1.1.2"
+source = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.2#e4fdc42fc670e9dbcadf41cfe29c9a525c1ffabf" }
 dependencies = [
     { name = "structlog" },
 ]
@@ -1636,7 +1636,7 @@ requires-dist = [
     { name = "ipython", specifier = ">=9" },
     { name = "nest-asyncio", specifier = ">=1.6" },
     { name = "pillow", specifier = ">=11" },
-    { name = "py-lib-runtime", git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.1" },
+    { name = "py-lib-runtime", git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.2" },
     { name = "pytest", specifier = ">=9" },
     { name = "rich", specifier = ">=14" },
 ]

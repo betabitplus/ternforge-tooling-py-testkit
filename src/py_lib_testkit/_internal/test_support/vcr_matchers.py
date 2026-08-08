@@ -32,7 +32,8 @@ def method_case_insensitive(r1: Any, r2: Any) -> None:
     method_left = str(getattr(r1, "method", "")).upper()
     method_right = str(getattr(r2, "method", "")).upper()
     if method_left != method_right:
-        raise AssertionError(f"{method_left} != {method_right}")
+        msg = f"{method_left} != {method_right}"
+        raise AssertionError(msg)
 
 
 def multipart_single_file_content(r1: Any, r2: Any) -> None:
@@ -42,7 +43,8 @@ def multipart_single_file_content(r1: Any, r2: Any) -> None:
         msg = "requests are not both multipart single-file uploads"
         raise AssertionError(msg)
     if not maybe_equal:
-        raise AssertionError("multipart single-file content differs")
+        msg_0 = "multipart single-file content differs"
+        raise AssertionError(msg_0)
 
 
 def json_semantic_body(
@@ -55,4 +57,5 @@ def json_semantic_body(
         msg = "requests are not both JSON bodies"
         raise AssertionError(msg)
     if not maybe_equal:
-        raise AssertionError(f"json body differs: {diff_message}")
+        msg_0 = f"json body differs: {diff_message}"
+        raise AssertionError(msg_0)

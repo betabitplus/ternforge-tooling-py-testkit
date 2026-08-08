@@ -1,4 +1,4 @@
-_commit: v1.2.6
+_commit: v1.2.8
 _src_path: https://github.com/betabitplus/ternforge-template-py-library.git
 author_email: 8123085+betabitplus@users.noreply.github.com
 author_name: betabitplus
@@ -17,7 +17,6 @@ initial_version: 1.0.1
 library_lane: standard-lib
 package_name: py_lib_testkit
 pip_audit_waivers: []
-preserve_pyproject_on_update: true
 project_description: Reusable Python library test helpers, configuration readers,
     and active-loop support.
 project_name: py-lib-testkit

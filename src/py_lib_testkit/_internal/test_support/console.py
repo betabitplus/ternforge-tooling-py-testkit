@@ -33,7 +33,7 @@ from py_lib_testkit._internal.test_support._console_appearance import (
 class _JsonRenderOptions:
     """Options passed through to `json.dumps` for stable display output."""
 
-    indent: None | int | str = 2
+    indent: int | str | None = 2
     skip_keys: bool = False
     ensure_ascii: bool = False
     check_circular: bool = True
@@ -66,7 +66,7 @@ class DemoConsole(Console):
         json: str | None = None,
         *,
         data: Any = None,
-        indent: None | int | str = 2,
+        indent: int | str | None = 2,
         highlight: bool = True,
         skip_keys: bool = False,
         ensure_ascii: bool = False,

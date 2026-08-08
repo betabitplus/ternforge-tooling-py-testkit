@@ -1,0 +1,8 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>betabitplus/ternforge-infra-updates//presets/python-library.json5#v0.1.0"],
+  "enabledManagers": ["pep621"],
+  "packageRules": [
+    {"matchDepNames": ["py-lib-testkit"], "allowedVersions": "<=1.1.4"}
+  ]
+}

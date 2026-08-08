@@ -1,0 +1,16 @@
+[project]
+name = "task0006-chore-consumer"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = []
+
+[dependency-groups]
+dev = ["py-lib-policy", "py-lib-testkit"]
+
+[tool.uv]
+required-version = "==0.12.0"
+
+[tool.uv.sources]
+py-lib-runtime = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git", tag = "v1.1.1" }
+py-lib-policy = { git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git", tag = "v1.1.2" }
+py-lib-testkit = { git = "https://github.com/betabitplus/ternforge-tooling-py-testkit.git", tag = "v1.1.3" }

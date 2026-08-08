@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.4...v1.1.5) (2026-08-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency py-lib-runtime to v1.1.2 ([#24](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/24)) ([8484dbd](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/8484dbd30843c2002fe57c50e7b023185ac64944))
+
 ## [1.1.4](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.3...v1.1.4) (2026-08-08)
 
 

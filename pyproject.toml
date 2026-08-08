@@ -1,0 +1,9 @@
+[project]
+name = "task0006-pre1-consumer"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = ["py-lib-runtime", "py-lib-testkit"]
+
+[tool.uv.sources]
+py-lib-runtime = { git = "https://github.com/betabitplus/ternforge-infra-updates.git", tag = "v0.1.0" }
+py-lib-testkit = { git = "https://github.com/betabitplus/ternforge-infra-updates.git", tag = "v0.1.0" }

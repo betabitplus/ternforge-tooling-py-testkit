@@ -26,12 +26,16 @@ classifiers = [
 ]
 # --- Main Dependencies ---
 dependencies = [
+<<<<<<< before updating
   "ipython>=9",
   "nest-asyncio>=1.6",
   "pillow>=11",
   "py-lib-runtime",
   "pytest>=9",
   "rich>=14",
+=======
+  "py-lib-runtime",
+>>>>>>> after updating
 ]
 # --- Project URLs ---
 urls."Bug Tracker" = "https://github.com/betabitplus/ternforge-tooling-py-testkit/issues"
@@ -70,6 +74,12 @@ dev = [
   "pip-audit>=2.10.1",
   "pre-commit>=4.6.0",
   "pyproject-fmt>=2.23.0",
+<<<<<<< before updating
+=======
+  # Shared repo tooling and test support
+  "py-lib-policy",
+  "py-lib-testkit",
+>>>>>>> after updating
   "pyright>=1.1.410",
   # Test runner and plugins
   "pytest>=9.1.0",
@@ -97,7 +107,22 @@ build.targets.wheel.packages = [ "src/py_lib_testkit" ]
 required-version = "==0.12.0"
 
 [tool.uv.sources]
+<<<<<<< before updating
 py-lib-runtime = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git", tag = "v1.1.2" }
+=======
+py-lib-runtime = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git", tag = "v1.1.1" }
+py-lib-policy = { git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git", tag = "v1.1.2" }
+py-lib-testkit = { git = "https://github.com/betabitplus/ternforge-tooling-py-testkit.git", tag = "v1.1.4" }
+
+[tool.setuptools]
+# Package discovery is scoped to `src/`; keep non-package code outside `src/`.
+packages.find.where = [ "src" ]
+packages.find.include = [ "*" ]
+# ==============================================================================
+# Setuptools Configuration
+# ==============================================================================
+package-dir."" = "src"
+>>>>>>> after updating
 
 # ---------------- Ruff configuration ----------------
 [tool.ruff]

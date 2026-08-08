@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.2...v1.1.3) (2026-08-08)
+
+
+### Bug Fixes
+
+* update runtime dependency ([#11](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/11)) ([58fd132](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/58fd132ce6a6f2302356e19e1e61187070f3a580))
+
 ## [1.1.2](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.1...v1.1.2) (2026-08-07)
 
 

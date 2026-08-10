@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.8](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.7...v1.1.8) (2026-08-10)
+
+
+### Bug Fixes
+
+* restore import architecture contracts ([#48](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/48)) ([908103d](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/908103dc0f939fe94f9e3b3ca4065370e75cda26))
+
 ## [1.1.7](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.6...v1.1.7) (2026-08-10)
 
 

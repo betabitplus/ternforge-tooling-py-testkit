@@ -1,5 +1,10 @@
 """Private implementation exports used by the public facade."""
 
+from py_lib_testkit._internal.config import (
+    ProjectToolingConfig as ProjectToolingConfig,
+    get_project_tooling_config as get_project_tooling_config,
+    get_repo_root as get_repo_root,
+)
 from py_lib_testkit._internal.test_support import (
     DemoConsole as DemoConsole,
     cassette_file_path as cassette_file_path,

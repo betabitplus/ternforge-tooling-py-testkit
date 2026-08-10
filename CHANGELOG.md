@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.6](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.5...v1.1.6) (2026-08-10)
+
+
+### Bug Fixes
+
+* make testkit pass Ternforge policy ([#40](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/40)) ([60d37e9](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/60d37e9d65707bbd6d1370b698f7be316df84f66))
+
 ## [1.1.5](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.4...v1.1.5) (2026-08-08)
 
 

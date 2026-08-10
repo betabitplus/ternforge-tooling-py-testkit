@@ -10,7 +10,7 @@ requires = [ "hatchling" ]
 # ==============================================================================
 [project]
 name = "py-lib-testkit"
-version = "1.1.7"
+version = "1.1.8"
 description = "Reusable Python library test helpers, configuration readers, and active-loop support."
 readme = "README.md"
 keywords = [ "library", "python" ]

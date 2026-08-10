@@ -1,0 +1,1 @@
+"""Shared testkit test support."""

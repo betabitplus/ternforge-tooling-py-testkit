@@ -98,7 +98,7 @@ build.targets.wheel.packages = [ "src/py_lib_testkit" ]
 [tool.uv]
 required-version = "==0.12.0"
 sources.py-lib-policy = { git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git", tag = "v1.1.3" }
-sources.py-lib-runtime = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git", tag = "v1.1.2" }
+sources.py-lib-runtime = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git", tag = "v1.1.3" }
 
 # ---------------- Ruff configuration ----------------
 [tool.ruff]

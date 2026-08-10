@@ -2,14 +2,9 @@
 
 from __future__ import annotations
 
-from py_lib_testkit._internal.config import (
+# pyright: reportUnusedImport=false
+from py_lib_testkit._internal.config import (  # noqa: F401
     ProjectToolingConfig,
     get_project_tooling_config,
     get_repo_root,
 )
-
-__all__ = [
-    "ProjectToolingConfig",
-    "get_project_tooling_config",
-    "get_repo_root",
-]

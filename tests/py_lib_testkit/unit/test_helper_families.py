@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import tomllib
 from pathlib import Path
 
 from PIL import Image
@@ -48,6 +49,8 @@ def test_async_setup_helper() -> None:
     assert run_async(answer()) == 42
 
 
-def test_public_package_has_no_policy_dependency() -> None:
-    pyproject = Path(__file__).parents[1] / "pyproject.toml"
-    assert "py-lib-policy" not in pyproject.read_text(encoding="utf-8")
+def test_public_package_has_no_policy_runtime_dependency() -> None:
+    with Path("pyproject.toml").open("rb") as stream:
+        dependencies = tomllib.load(stream)["project"]["dependencies"]
+
+    assert not any(item.startswith("py-lib-policy") for item in dependencies)

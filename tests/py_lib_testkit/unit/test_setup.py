@@ -14,6 +14,8 @@ from types import ModuleType
 
 import pytest
 
+from py_lib_testkit._internal.test_support import setup as _setup_support_module
+
 # =============================================================================
 # Tests
 # =============================================================================
@@ -122,6 +124,5 @@ env_prefix = "SAMPLE_LIB"
 
 
 def _fresh_setup_module() -> ModuleType:
-    """Import setup support after the test has selected the consuming repo."""
-    module = importlib.import_module("py_lib_testkit._internal.test_support.setup")
-    return importlib.reload(module)
+    """Reload setup support after the test has selected the consuming repo."""
+    return importlib.reload(_setup_support_module)

@@ -42,13 +42,6 @@
 
 * update runtime dependency ([#11](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/11)) ([58fd132](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/58fd132ce6a6f2302356e19e1e61187070f3a580))
 
-## [1.1.2](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.1...v1.1.2) (2026-08-07)
-
-
-### Bug Fixes
-
-* remove legacy tooling identities ([#7](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/7)) ([fa2ce11](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/fa2ce11fcb42c3c02e8a9c09c1136db7283a1bbe))
-
 ## [1.1.1](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.0...v1.1.1) (2026-08-07)
 
 
@@ -66,7 +59,3 @@
 ## 1.0.1
 
 - Normalize the runtime Git dependency to one PEP 508 immutable source.
-
-## 1.0.0
-
-- Initial production package split from the frozen baseline.

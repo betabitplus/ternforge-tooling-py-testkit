@@ -8,11 +8,10 @@ Why:
 from __future__ import annotations
 
 # =============================================================================
-# Platform Lane Defaults
+# Platform Lanes
 # =============================================================================
 
-DEFAULT_LIBRARY_LANE = "standard-lib"
-SUPPORTED_LIBRARY_LANES = (DEFAULT_LIBRARY_LANE,)
+SUPPORTED_LIBRARY_LANES = ("standard-lib",)
 
 # =============================================================================
 # Logging Defaults

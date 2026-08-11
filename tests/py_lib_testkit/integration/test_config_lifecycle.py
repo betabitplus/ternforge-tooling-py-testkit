@@ -1,9 +1,4 @@
-"""Project tooling config tests.
-
-Why:
-    Protects the pyproject-backed manifest used by shared py-lib tooling for
-    package names, environment variables, and runtime logging policy.
-"""
+"""Ternforge project config tests."""
 
 from __future__ import annotations
 
@@ -59,24 +54,14 @@ def test_project_config_loads_optional_tooling_and_runtime_policy(
     assert config.logging_quiet_module_names == ("httpx", "urllib3")
 
 
-def test_project_config_defaults_library_lane_for_existing_repos(
-    tmp_path: Path,
-) -> None:
-    _write_minimal_pyproject(tmp_path)
-
-    config = get_project_tooling_config(start=tmp_path)
-
-    assert config.library_lane == "standard-lib"
-
-
 def test_project_config_rejects_unknown_library_lane(tmp_path: Path) -> None:
     _write_minimal_pyproject(tmp_path)
     pyproject_path = tmp_path / "pyproject.toml"
     pyproject_text = pyproject_path.read_text(encoding="utf-8")
     pyproject_path.write_text(
         pyproject_text.replace(
-            'env_prefix = "SAMPLE_LIB"',
-            'library_lane = "bespoke-lib"\nenv_prefix = "SAMPLE_LIB"',
+            'library_lane = "standard-lib"',
+            'library_lane = "bespoke-lib"',
         ),
         encoding="utf-8",
     )
@@ -132,7 +117,7 @@ def test_project_config_rejects_missing_tooling_table(tmp_path: Path) -> None:
 
 
 def _write_minimal_pyproject(project_root: Path) -> None:
-    """Write a minimal py-lib tooling manifest for config discovery tests."""
+    """Write a minimal Ternforge manifest for config discovery tests."""
     project_root.joinpath("pyproject.toml").write_text(
         (
             "[project]\n"
@@ -141,6 +126,7 @@ def _write_minimal_pyproject(project_root: Path) -> None:
             "\n[tool.ternforge]\n"
             'primary_package = "sample_lib"\n'
             'package_names = [ "sample_lib" ]\n'
+            'library_lane = "standard-lib"\n'
             'env_prefix = "SAMPLE_LIB"\n'
         ),
         encoding="utf-8",

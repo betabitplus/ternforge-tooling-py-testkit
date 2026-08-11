@@ -2,10 +2,7 @@
 
 from __future__ import annotations
 
-from py_lib_testkit._api.defaults import (
-    DEFAULT_LIBRARY_LANE,
-    DEFAULT_LOGGING_LOCAL_LEVEL,
-)
+from py_lib_testkit._api.defaults import DEFAULT_LOGGING_LOCAL_LEVEL
 from py_lib_testkit._internal.config.models import ProjectToolingConfig
 from py_lib_testkit._internal.config.validation import (
     normalize_package_names,
@@ -33,11 +30,7 @@ def build_project_tooling_config(
         primary_package=require_string(tooling, "primary_package"),
         package_names=normalize_package_names(tooling.get("package_names")),
         env_prefix=require_string(tooling, "env_prefix"),
-        library_lane=optional_string(
-            tooling,
-            "library_lane",
-            default=DEFAULT_LIBRARY_LANE,
-        ),
+        library_lane=require_string(tooling, "library_lane"),
         logging_default_local_level=optional_string(
             runtime_logging,
             "default_local_level",

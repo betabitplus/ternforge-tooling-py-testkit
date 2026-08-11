@@ -68,7 +68,7 @@ def _fresh_module(module_name: str) -> ModuleType:
 
 
 def _write_pyproject(project_root: Path) -> None:
-    """Write a minimal py-lib project manifest for VCR helper tests."""
+    """Write a minimal Ternforge project manifest for VCR helper tests."""
     project_root.joinpath("pyproject.toml").write_text(
         (
             "[project]\n"
@@ -77,6 +77,7 @@ def _write_pyproject(project_root: Path) -> None:
             "\n[tool.ternforge]\n"
             'primary_package = "sample_lib"\n'
             'package_names = [ "sample_lib" ]\n'
+            'library_lane = "standard-lib"\n'
             'env_prefix = "SAMPLE_LIB"\n'
         ),
         encoding="utf-8",

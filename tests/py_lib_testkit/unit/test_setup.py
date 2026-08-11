@@ -108,7 +108,7 @@ def _tooling_package_root() -> Path:
 
 
 def _write_pyproject(project_root: Path) -> None:
-    """Write a minimal py-lib project manifest for setup support tests."""
+    """Write a minimal Ternforge project manifest for setup support tests."""
     project_root.joinpath("pyproject.toml").write_text(
         """[project]
 name = "sample-lib"
@@ -117,6 +117,7 @@ version = "1.2.3"
 [tool.ternforge]
 primary_package = "sample_lib"
 package_names = [ "sample_lib" ]
+library_lane = "standard-lib"
 env_prefix = "SAMPLE_LIB"
 """,
         encoding="utf-8",

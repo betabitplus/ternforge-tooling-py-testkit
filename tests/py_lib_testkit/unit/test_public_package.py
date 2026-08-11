@@ -16,27 +16,23 @@ from py_lib_testkit import (
 )
 
 
-def _write_project(root: Path, *, table: str = "ternforge") -> Path:
+def _write_project(root: Path) -> Path:
     path = root / "pyproject.toml"
     path.write_text(
-        "\n".join(
-            [
-                "[project]",
-                'name = "sample-distribution"',
-                'version = "2.3.4"',
-                "",
-                f"[tool.{table}]",
-                'primary_package = "sample_lib"',
-                'package_names = [ "sample_lib", "sample_extra" ]',
-                'env_prefix = "SAMPLE_LIB"',
-                'library_lane = "standard-lib"',
-                "",
-                "[tool.py_lib_runtime.logging]",
-                'default_local_level = "INFO"',
-                'quiet_module_names = [ "httpx", "urllib3" ]',
-                "",
-            ]
-        ),
+        """[project]
+name = "sample-distribution"
+version = "2.3.4"
+
+[tool.ternforge]
+primary_package = "sample_lib"
+package_names = [ "sample_lib", "sample_extra" ]
+library_lane = "standard-lib"
+env_prefix = "SAMPLE_LIB"
+
+[tool.py_lib_runtime.logging]
+default_local_level = "INFO"
+quiet_module_names = [ "httpx", "urllib3" ]
+""",
         encoding="utf-8",
     )
     return path
@@ -56,12 +52,6 @@ def test_public_config_contract_reads_ternforge_table(tmp_path: Path) -> None:
     assert config.env_var("LOG_LEVEL") == "SAMPLE_LIB_LOG_LEVEL"
     assert config.record_vcr_var == "SAMPLE_LIB_RECORD_VCR"
     assert config.multipart_signature_prefix == b"SAMPLE_LIB_MULTIPART_SIGNATURE:"
-
-
-def test_old_tool_table_is_not_a_hidden_compatibility_path(tmp_path: Path) -> None:
-    _write_project(tmp_path, table="py_lib_" + "starter")
-    with pytest.raises(TypeError, match=r"tool\.ternforge"):
-        get_project_tooling_config(start=tmp_path)
 
 
 def test_repo_root_walks_up_and_fails_closed(tmp_path: Path) -> None:

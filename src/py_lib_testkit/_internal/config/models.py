@@ -6,7 +6,6 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from py_lib_testkit._api.defaults import (
-    DEFAULT_LIBRARY_LANE,
     DEFAULT_LOGGING_LOCAL_LEVEL,
     SUPPORTED_LIBRARY_LANES,
 )
@@ -23,7 +22,7 @@ class ProjectToolingConfig:
     primary_package: str
     package_names: tuple[str, ...]
     env_prefix: str
-    library_lane: str = DEFAULT_LIBRARY_LANE
+    library_lane: str
     logging_default_local_level: str = DEFAULT_LOGGING_LOCAL_LEVEL
     logging_quiet_module_names: tuple[str, ...] | None = None
 

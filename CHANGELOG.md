@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.10](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.9...v1.1.10) (2026-08-11)
+
+
+### Bug Fixes
+
+* remove planning protocol compatibility path ([#58](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/58)) ([cb2d306](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/cb2d306d42b26d9b77c831718d888fdb6c94ca86))
+
 ## [1.1.9](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.8...v1.1.9) (2026-08-11)
 
 

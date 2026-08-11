@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.9](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.8...v1.1.9) (2026-08-11)
+
+
+### Bug Fixes
+
+* remove migration-era testkit residue ([#54](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/54)) ([a69aa57](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/a69aa57cfb5dc30d84403835f8dd8bceba2330af))
+
 ## [1.1.8](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.7...v1.1.8) (2026-08-10)
 
 

@@ -19,7 +19,6 @@ version = "1.2.3"
 primary_package = "sample_lib"
 package_names = [ "sample_lib" ]
 env_prefix = "SAMPLE_LIB"
-library_lane = "standard-lib"
 """,
         encoding="utf-8",
     )
@@ -28,4 +27,3 @@ library_lane = "standard-lib"
 
     assert config.distribution_name == "sample-lib"
     assert config.primary_package == "sample_lib"
-    assert config.library_lane == "standard-lib"

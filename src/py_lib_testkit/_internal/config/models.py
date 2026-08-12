@@ -5,10 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from py_lib_testkit._api.defaults import (
-    DEFAULT_LOGGING_LOCAL_LEVEL,
-    SUPPORTED_LIBRARY_LANES,
-)
+from py_lib_testkit._api.defaults import DEFAULT_LOGGING_LOCAL_LEVEL
 
 _TOOL_TABLE = "ternforge"
 
@@ -22,7 +19,6 @@ class ProjectToolingConfig:
     primary_package: str
     package_names: tuple[str, ...]
     env_prefix: str
-    library_lane: str
     logging_default_local_level: str = DEFAULT_LOGGING_LOCAL_LEVEL
     logging_quiet_module_names: tuple[str, ...] | None = None
 
@@ -44,12 +40,6 @@ class ProjectToolingConfig:
             msg = (
                 f"pyproject.toml [tool.{_TOOL_TABLE}].primary_package must appear "
                 "in package_names."
-            )
-            raise ValueError(msg)
-        if self.library_lane not in SUPPORTED_LIBRARY_LANES:
-            msg = (
-                f"pyproject.toml [tool.{_TOOL_TABLE}].library_lane must be one of "
-                f"{', '.join(SUPPORTED_LIBRARY_LANES)}."
             )
             raise ValueError(msg)
         if not self.logging_default_local_level:

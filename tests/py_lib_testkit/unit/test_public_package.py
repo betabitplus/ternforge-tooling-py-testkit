@@ -26,7 +26,6 @@ version = "2.3.4"
 [tool.ternforge]
 primary_package = "sample_lib"
 package_names = [ "sample_lib", "sample_extra" ]
-library_lane = "standard-lib"
 env_prefix = "SAMPLE_LIB"
 
 [tool.py_lib_runtime.logging]

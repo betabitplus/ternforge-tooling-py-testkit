@@ -77,7 +77,6 @@ def _write_pyproject(project_root: Path) -> None:
             "\n[tool.ternforge]\n"
             'primary_package = "sample_lib"\n'
             'package_names = [ "sample_lib" ]\n'
-            'library_lane = "standard-lib"\n'
             'env_prefix = "SAMPLE_LIB"\n'
         ),
         encoding="utf-8",

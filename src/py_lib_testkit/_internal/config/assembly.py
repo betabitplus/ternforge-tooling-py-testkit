@@ -30,7 +30,6 @@ def build_project_tooling_config(
         primary_package=require_string(tooling, "primary_package"),
         package_names=normalize_package_names(tooling.get("package_names")),
         env_prefix=require_string(tooling, "env_prefix"),
-        library_lane=require_string(tooling, "library_lane"),
         logging_default_local_level=optional_string(
             runtime_logging,
             "default_local_level",

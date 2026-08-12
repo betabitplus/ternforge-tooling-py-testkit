@@ -117,7 +117,6 @@ version = "1.2.3"
 [tool.ternforge]
 primary_package = "sample_lib"
 package_names = [ "sample_lib" ]
-library_lane = "standard-lib"
 env_prefix = "SAMPLE_LIB"
 """,
         encoding="utf-8",

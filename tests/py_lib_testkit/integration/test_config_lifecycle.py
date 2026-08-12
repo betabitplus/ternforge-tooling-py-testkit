@@ -21,7 +21,6 @@ def test_project_config_loads_from_current_repo() -> None:
     assert config.distribution_version == __version__
     assert config.primary_package == "py_lib_testkit"
     assert config.package_names == ("py_lib_testkit",)
-    assert config.library_lane == "standard-lib"
     assert config.env_prefix == "PY_LIB_TESTKIT"
     assert config.logging_default_local_level == "DEBUG"
     assert config.logging_quiet_module_names is None
@@ -38,7 +37,6 @@ def test_project_config_loads_optional_tooling_and_runtime_policy(
             "\n[tool.ternforge]\n"
             'primary_package = "sample_lib"\n'
             'package_names = [ "sample_lib" ]\n'
-            'library_lane = "standard-lib"\n'
             'env_prefix = "SAMPLE_LIB"\n'
             "\n[tool.py_lib_runtime.logging]\n"
             'default_local_level = "INFO"\n'
@@ -49,25 +47,8 @@ def test_project_config_loads_optional_tooling_and_runtime_policy(
 
     config = get_project_tooling_config(start=tmp_path)
 
-    assert config.library_lane == "standard-lib"
     assert config.logging_default_local_level == "INFO"
     assert config.logging_quiet_module_names == ("httpx", "urllib3")
-
-
-def test_project_config_rejects_unknown_library_lane(tmp_path: Path) -> None:
-    _write_minimal_pyproject(tmp_path)
-    pyproject_path = tmp_path / "pyproject.toml"
-    pyproject_text = pyproject_path.read_text(encoding="utf-8")
-    pyproject_path.write_text(
-        pyproject_text.replace(
-            'library_lane = "standard-lib"',
-            'library_lane = "bespoke-lib"',
-        ),
-        encoding="utf-8",
-    )
-
-    with pytest.raises(ValueError, match="library_lane"):
-        get_project_tooling_config(start=tmp_path)
 
 
 def test_repo_root_follows_current_directory_after_cache_warmup(
@@ -126,7 +107,6 @@ def _write_minimal_pyproject(project_root: Path) -> None:
             "\n[tool.ternforge]\n"
             'primary_package = "sample_lib"\n'
             'package_names = [ "sample_lib" ]\n'
-            'library_lane = "standard-lib"\n'
             'env_prefix = "SAMPLE_LIB"\n'
         ),
         encoding="utf-8",

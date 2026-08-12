@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.0.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.10...v2.0.0) (2026-08-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove library lane config ([#61](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/61))
+
+### Bug Fixes
+
+* **deps:** update ternforge python tooling ([#56](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/56)) ([ff0f2f5](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/ff0f2f51ba7da2ead390109a6eaf24975b871678))
+* remove library lane config ([#61](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/61)) ([4f566cc](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/4f566cca9d18a51d3c4a0f44ec73aca613548a20))
+
 ## [1.1.10](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.9...v1.1.10) (2026-08-11)
 
 

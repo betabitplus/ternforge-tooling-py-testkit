@@ -1568,16 +1568,16 @@ wheels = [
 
 [[package]]
 name = "py-lib-policy"
-version = "1.1.5"
-source = { git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git?tag=v1.1.5#25c7e333212e89eaf36eb94b93d4aff8c2bf3f8e" }
+version = "1.1.8"
+source = { git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git?tag=v1.1.8#eed0460cdc91842024a221402f2929a22e659453" }
 dependencies = [
     { name = "pyyaml" },
 ]
 
 [[package]]
 name = "py-lib-runtime"
-version = "1.1.3"
-source = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.3#fc5eaeba298c66201fe8df88fd14361aefd96f30" }
+version = "1.1.5"
+source = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.5#d55eebeeedbc541e5b4e81b375de1eac81753c33" }
 dependencies = [
     { name = "structlog" },
 ]
@@ -1645,7 +1645,7 @@ requires-dist = [
     { name = "ipython", specifier = ">=9" },
     { name = "nest-asyncio", specifier = ">=1.6" },
     { name = "pillow", specifier = ">=11" },
-    { name = "py-lib-runtime", git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.3" },
+    { name = "py-lib-runtime", git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.5" },
     { name = "pytest", specifier = ">=9" },
     { name = "rich", specifier = ">=14" },
 ]
@@ -1676,7 +1676,7 @@ dev = [
     { name = "pillow", specifier = ">=12.2" },
     { name = "pip-audit", specifier = ">=2.10.1" },
     { name = "pre-commit", specifier = ">=4.6.0" },
-    { name = "py-lib-policy", git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git?tag=v1.1.5" },
+    { name = "py-lib-policy", git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git?tag=v1.1.8" },
     { name = "pyproject-fmt", specifier = ">=2.23.0" },
     { name = "pyright", specifier = ">=1.1.410" },
     { name = "pytest", specifier = ">=9.1.0" },

@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.0.0...v2.0.1) (2026-08-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency betabitplus/ternforge-infra-updates to v0.2.5 ([#60](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/60)) ([e6f72bf](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/e6f72bf1336c21db04a20cf2d899d8336fc195cf))
+* support private source repositories ([#72](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/72)) ([2ebd2cd](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/2ebd2cd56932fd33862bd6720221cd5229352031))
+
 ## [2.0.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v1.1.10...v2.0.0) (2026-08-12)
 
 

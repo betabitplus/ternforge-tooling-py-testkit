@@ -2,6 +2,9 @@ version = 1
 revision = 3
 requires-python = ">=3.13"
 
+[manifest]
+overrides = [{ name = "py-lib-runtime", git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.6" }]
+
 [[package]]
 name = "annotated-types"
 version = "0.8.0"
@@ -1568,16 +1571,16 @@ wheels = [
 
 [[package]]
 name = "py-lib-policy"
-version = "1.1.8"
-source = { git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git?tag=v1.1.8#eed0460cdc91842024a221402f2929a22e659453" }
+version = "1.1.9"
+source = { git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git?tag=v1.1.9#c8be86f4dc85e4eb8be658a0b6b7fa00895a229a" }
 dependencies = [
     { name = "pyyaml" },
 ]
 
 [[package]]
 name = "py-lib-runtime"
-version = "1.1.5"
-source = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.5#d55eebeeedbc541e5b4e81b375de1eac81753c33" }
+version = "1.1.6"
+source = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.6#53962ad7488b2d92689b53d7d37cf141c41448e9" }
 dependencies = [
     { name = "structlog" },
 ]
@@ -1643,7 +1646,7 @@ requires-dist = [
     { name = "ipython", specifier = ">=9" },
     { name = "nest-asyncio", specifier = ">=1.6" },
     { name = "pillow", specifier = ">=11" },
-    { name = "py-lib-runtime", git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.5" },
+    { name = "py-lib-runtime", git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.6" },
     { name = "pytest", specifier = ">=9" },
     { name = "rich", specifier = ">=14" },
 ]
@@ -1673,7 +1676,7 @@ dev = [
     { name = "pillow", specifier = ">=12.2" },
     { name = "pip-audit", specifier = ">=2.10.1" },
     { name = "pre-commit", specifier = ">=4.6.0" },
-    { name = "py-lib-policy", git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git?tag=v1.1.8" },
+    { name = "py-lib-policy", git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git?tag=v1.1.9" },
     { name = "pyproject-fmt", specifier = ">=2.23.0" },
     { name = "pyright", specifier = ">=1.1.410" },
     { name = "pytest", specifier = ">=9.1.0" },

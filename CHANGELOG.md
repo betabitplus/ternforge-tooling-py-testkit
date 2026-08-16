@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.0.1...v2.0.2) (2026-08-16)
+
+
+### Bug Fixes
+
+* **deps:** update Python library template to v1.4.11 ([086dfbb](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/086dfbb41bda35ffa156c2b6f7b15ab40a372425))
+
 ## [2.0.1](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.0.0...v2.0.1) (2026-08-16)
 
 

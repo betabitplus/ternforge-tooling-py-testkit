@@ -30,6 +30,11 @@ from py_lib_testkit._internal.test_support.e2e_vcr_guard import (
     cassette_file_path as cassette_file_path,
     require_vcr_cassette_or_record_mode as require_vcr_cassette_or_record_mode,
 )
+from py_lib_testkit._internal.test_support.evidence import (
+    publish_file as publish_file,
+    publish_json as publish_json,
+    publish_visual_diff as publish_visual_diff,
+)
 from py_lib_testkit._internal.test_support.images import (
     image_changed as image_changed,
     save_test_output_image as save_test_output_image,

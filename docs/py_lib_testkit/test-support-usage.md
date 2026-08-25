@@ -17,6 +17,7 @@ description: Shared test helpers exported by py_lib_testkit.
 - Standardizes test and workbench data/output path resolution.
 - Exposes developer productivity helpers for workbench and interactive runs.
 - Offers comparison helpers for images, JSON bodies, and multipart requests.
+- Publishes typed evidence to IPython and, when installed, Allure.
 
 ## 1.3 Examples
 
@@ -105,6 +106,17 @@ from py_lib_testkit import (
 
 # Example image comparison check
 # assert not image_changed(path_a, path_b)
+```
+
+### 1.3.6 Publishing Rich Evidence
+
+Use typed evidence for results that should be visible in an IPython run and persisted by an installed Allure adapter. JSON values must already be JSON-serializable; file evidence uses MIME types.
+
+```python
+from py_lib_testkit import evidence
+
+evidence.json("Result", result.model_dump(mode="json"))
+evidence.file("Generated video", video_path, media_type="video/mp4")
 ```
 
 ## 1.4 Runnable Examples

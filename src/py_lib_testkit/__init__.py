@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from importlib.metadata import PackageNotFoundError, version
 
+from py_lib_testkit._api import evidence as evidence
 from py_lib_testkit._api.config import (
     ProjectToolingConfig,
     get_project_tooling_config,
@@ -62,6 +63,7 @@ __all__ = [
     "console",
     "decode_base64_bytes",
     "describe_first_difference",
+    "evidence",
     "extract_boundary",
     "extract_single_part_content",
     "get_header_value",

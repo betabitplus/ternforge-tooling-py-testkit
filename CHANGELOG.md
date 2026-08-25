@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.0.2...v2.1.0) (2026-08-25)
+
+
+### Features
+
+* add rich evidence bridge ([#101](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/101)) ([930a7a8](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/930a7a8809c8f643553dc6182b2fe80e7d1f586c))
+
 ## [2.0.2](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.0.1...v2.0.2) (2026-08-16)
 
 

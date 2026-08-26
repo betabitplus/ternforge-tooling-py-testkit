@@ -110,7 +110,11 @@ build.targets.wheel.packages = [ "src/py_lib_testkit" ]
 required-version = "==0.12.5"
 sources.py-lib-policy = { git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git", tag = "v1.2.2" }
 sources.py-lib-runtime = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git", tag = "v1.1.7" }
+<<<<<<< before updating
 sources.py-lib-testkit = { git = "https://github.com/betabitplus/ternforge-tooling-py-testkit.git", tag = "v2.1.0" }
+=======
+sources.py-lib-testkit = { git = "https://github.com/betabitplus/ternforge-tooling-py-testkit.git", tag = "v2.1.2" }
+>>>>>>> after updating
 
 # ---------------- Ruff configuration ----------------
 [tool.ruff]

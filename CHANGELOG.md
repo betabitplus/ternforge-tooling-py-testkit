@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.1](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.1.0...v2.1.1) (2026-08-26)
+
+
+### Bug Fixes
+
+* apply lean template baseline ([#104](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/104)) ([6a98d5c](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/6a98d5c7195242426745570dca6000a495e64a08))
+* remove legacy vcr guard ([#106](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/106)) ([93c0470](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/93c047001eb2cacd608565c894695c515c29289f))
+
 ## [2.1.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.0.2...v2.1.0) (2026-08-25)
 
 

@@ -1,7 +1,7 @@
 """DemoConsole JSON rendering tests.
 
 Why:
-    Many repositories use `DemoConsole` for manual demo/e2e scripts executed via
+    Many repositories use `DemoConsole` for manual workbench scripts executed via
     `python -m ...`. JSON rendering must be stable and must not crash when
     passing options through to `json.dumps`.
 """

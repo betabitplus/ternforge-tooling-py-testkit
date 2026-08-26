@@ -1,16 +1,16 @@
-"""Reusable direct-run and test-process setup helpers.
+"""Reusable workbench direct-run and pytest-process setup helpers.
 
 Why:
-    Pytest runs and direct package-module runs need different setup behavior.
+    Pytest runs and direct workbench-module runs need different setup behavior.
 
 When to use:
     Use `configure_pytest_process()` from `tests/conftest.py`.
-    Use `configure_direct_module_process(...)` from package `__init__.py`
-    files that support direct module execution.
+    Use `configure_direct_module_process(...)` from `workbench/**/__init__.py`
+    package boundaries that support direct module execution.
 
 How:
     Pytest setup lowers logging noise.
-    Direct module setup enables nested-event-loop support and package-specific
+    Workbench module setup enables nested-event-loop support and package-specific
     logging when needed.
 
 Examples:
@@ -60,7 +60,7 @@ def configure_direct_module_process(
     configure_logging_from_env: str | None = None,
     configure_logging_from_env_suffix: str | None = None,
 ) -> None:
-    """Configure one package for direct `python -m ...` execution."""
+    """Configure one workbench package for direct `python -m ...` execution."""
     if not _main_file_belongs_to_package(
         main_file=main_file,
         package_root=package_root,

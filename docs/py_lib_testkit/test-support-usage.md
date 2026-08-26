@@ -58,7 +58,7 @@ wb_path = get_workbench_output_path(
 
 ### 1.3.3 Workbench and Demo Scripts
 
-Use these for direct module execution and async code that must also work in an already-running event loop.
+Use these for direct workbench-module execution and async code that must also work in an already-running event loop.
 
 ```python
 from pathlib import Path

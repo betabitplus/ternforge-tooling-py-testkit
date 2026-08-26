@@ -80,7 +80,7 @@ def configure_direct_module_process(
     configure_logging_from_env: str | None = None,
     configure_logging_from_env_suffix: str | None = None,
 ) -> None:
-    """Configure one package for direct `python -m ...` execution."""
+    """Configure one workbench package for direct `python -m ...` execution."""
     _configure_direct_module_process(
         main_file=main_file,
         package_root=package_root,

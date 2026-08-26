@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.3](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.1.2...v2.1.3) (2026-08-26)
+
+
+### Bug Fixes
+
+* clean verification reference index ([#112](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/112)) ([9763c69](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/9763c69b7d56e92ab991ecda9cdf1ee3456d0200))
+
 ## [2.1.2](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.1.1...v2.1.2) (2026-08-26)
 
 

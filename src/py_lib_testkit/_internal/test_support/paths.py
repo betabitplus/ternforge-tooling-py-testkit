@@ -30,6 +30,12 @@ def get_test_data_path(module_name: str, *, start: Path | None = None) -> Path:
     return get_repo_root(start=start) / "tests" / module_name / "data"
 
 
+def cassette_file_path(*, test_file: str, test_name: str) -> Path:
+    """Return the canonical cassette file path for a test function."""
+    test_path = Path(test_file).resolve()
+    return test_path.parent / "cassettes" / test_path.stem / f"{test_name}.yaml"
+
+
 def get_test_output_dir(
     module_name: str | None = None,
     *,

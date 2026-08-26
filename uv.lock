@@ -2014,7 +2014,6 @@ dependencies = [
     { name = "nest-asyncio" },
     { name = "pillow" },
     { name = "py-lib-runtime" },
-    { name = "pytest" },
     { name = "rich" },
 ]
 
@@ -2084,7 +2083,6 @@ requires-dist = [
     { name = "nest-asyncio", specifier = ">=1.6" },
     { name = "pillow", specifier = ">=11" },
     { name = "py-lib-runtime", git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.6" },
-    { name = "pytest", specifier = ">=9" },
     { name = "rich", specifier = ">=14" },
 ]
 

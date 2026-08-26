@@ -18,16 +18,6 @@ import pytest
 # =============================================================================
 
 
-def test_vcr_support_imports_are_independent_of_current_directory(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    monkeypatch.chdir(tmp_path)
-
-    _fresh_module("py_lib_testkit._internal.test_support.e2e_vcr_guard")
-    _fresh_module("py_lib_testkit._internal.test_support._vcr_shared")
-
-
 def test_multipart_signature_prefix_resolves_from_active_repo(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -37,23 +27,6 @@ def test_multipart_signature_prefix_resolves_from_active_repo(
     shared = _fresh_module("py_lib_testkit._internal.test_support._vcr_shared")
 
     assert shared.multipart_signature_prefix() == b"SAMPLE_LIB_MULTIPART_SIGNATURE:"
-
-
-def test_vcr_guard_uses_repo_scoped_recording_env_var(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    _write_pyproject(tmp_path)
-    test_file = tmp_path / "tests" / "sample_lib" / "e2e" / "test_case.py"
-    test_file.parent.mkdir(parents=True)
-    test_file.write_text("", encoding="utf-8")
-    monkeypatch.setenv("SAMPLE_LIB_RECORD_VCR", "1")
-    guard = _fresh_module("py_lib_testkit._internal.test_support.e2e_vcr_guard")
-
-    guard.require_vcr_cassette_or_record_mode(
-        test_file=str(test_file),
-        test_name="test_case",
-    )
 
 
 # =============================================================================

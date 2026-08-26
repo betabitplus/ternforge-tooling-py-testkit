@@ -36,7 +36,6 @@ from py_lib_testkit._internal.test_support import (
     publish_file as publish_file,
     publish_json as publish_json,
     publish_visual_diff as publish_visual_diff,
-    require_vcr_cassette_or_record_mode as require_vcr_cassette_or_record_mode,
     run_async as run_async,
     save_test_output_image as save_test_output_image,
     strip_ascii_whitespace as strip_ascii_whitespace,

@@ -13,7 +13,7 @@ description: Shared test helpers exported by py_lib_testkit.
 ## 1.2 Features
 
 - Provides standard Pytest process configuration.
-- Includes robust VCR cassette enforcement and request matchers.
+- Includes VCR request matchers.
 - Standardizes test and workbench data/output path resolution.
 - Exposes developer productivity helpers for workbench and interactive runs.
 - Offers comparison helpers for images, JSON bodies, and multipart requests.
@@ -31,20 +31,7 @@ from py_lib_testkit import configure_pytest_process
 configure_pytest_process()
 ```
 
-### 1.3.2 Enforcing E2E VCR Cassettes
-
-Use this when a test should safely replay a committed cassette or fail if recording was not explicitly requested. It accepts pytest `--record-mode=...` or the repo's record-VCR env var.
-
-```python
-from py_lib_testkit import require_vcr_cassette_or_record_mode
-
-require_vcr_cassette_or_record_mode(
-    test_file=__file__,
-    test_name="test_pipeline",
-)
-```
-
-### 1.3.3 Resolving Standard Paths
+### 1.3.2 Resolving Standard Paths
 
 Use these to fetch standardized, ignored directories for test inputs and outputs.
 
@@ -69,7 +56,7 @@ wb_path = get_workbench_output_path(
 )
 ```
 
-### 1.3.4 Workbench and Demo Scripts
+### 1.3.3 Workbench and Demo Scripts
 
 Use these for direct module execution and async code that must also work in an already-running event loop.
 

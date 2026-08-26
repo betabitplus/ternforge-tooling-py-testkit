@@ -40,7 +40,6 @@ from py_lib_testkit._internal import (
     parse_data_url as _parse_data_url,
     png_pixels_digest as _png_pixels_digest,
     png_pixels_signature as _png_pixels_signature,
-    require_vcr_cassette_or_record_mode as _require_vcr_cassette_or_record_mode,
     run_async as _run_async,
     save_test_output_image as _save_test_output_image,
     strip_ascii_whitespace as _strip_ascii_whitespace,
@@ -100,6 +99,11 @@ def get_test_data_path(module_name: str, *, start: Path | None = None) -> Path:
     return _get_test_data_path(module_name, start=start)
 
 
+def cassette_file_path(*, test_file: str, test_name: str) -> Path:
+    """Return the canonical cassette file path for a test function."""
+    return _cassette_file_path(test_file=test_file, test_name=test_name)
+
+
 def get_test_output_dir(
     module_name: str | None = None,
     *,
@@ -156,21 +160,6 @@ def save_test_output_image(
 ) -> Path:
     """Save an image under the ignored test output directory."""
     return _save_test_output_image(image, filename, module_name=module_name)
-
-
-# =============================================================================
-# VCR Guard Facade
-# =============================================================================
-
-
-def cassette_file_path(*, test_file: str, test_name: str) -> Path:
-    """Return the canonical cassette file path for an e2e test function."""
-    return _cassette_file_path(test_file=test_file, test_name=test_name)
-
-
-def require_vcr_cassette_or_record_mode(*, test_file: str, test_name: str) -> None:
-    """Fail when replay data is missing and no explicit recording mode is active."""
-    _require_vcr_cassette_or_record_mode(test_file=test_file, test_name=test_name)
 
 
 # =============================================================================

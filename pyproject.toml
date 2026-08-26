@@ -30,7 +30,6 @@ dependencies = [
   "nest-asyncio>=1.6",
   "pillow>=11",
   "py-lib-runtime",
-  "pytest>=9",
   "rich>=14",
 ]
 # --- Project URLs ---

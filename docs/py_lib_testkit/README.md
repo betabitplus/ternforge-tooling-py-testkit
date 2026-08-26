@@ -4,4 +4,4 @@
 
 Use only imports from `py_lib_testkit`; private implementation modules are not part of the supported API.
 
-See [test-support usage](test-support-usage.md) for examples and [verification](verification/README.md) for the complete validation workflow.
+See [test-support usage](test-support-usage.md) for examples.

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.1.1...v2.1.2) (2026-08-26)
+
+
+### Bug Fixes
+
+* align runtime dependency pin ([#107](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/107)) ([46a8db0](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/46a8db05850a3518850093781d898426e6b3ba9a))
+
 ## [2.1.1](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.1.0...v2.1.1) (2026-08-26)
 
 

@@ -1999,8 +1999,8 @@ source = { git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git
 
 [[package]]
 name = "py-lib-runtime"
-version = "1.1.6"
-source = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.6#53962ad7488b2d92689b53d7d37cf141c41448e9" }
+version = "1.1.7"
+source = { git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.7#430368122183df5009412ef62513bd6fd31206cd" }
 dependencies = [
     { name = "structlog" },
 ]
@@ -2082,7 +2082,7 @@ requires-dist = [
     { name = "ipython", specifier = ">=9" },
     { name = "nest-asyncio", specifier = ">=1.6" },
     { name = "pillow", specifier = ">=11" },
-    { name = "py-lib-runtime", git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.6" },
+    { name = "py-lib-runtime", git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.7" },
     { name = "rich", specifier = ">=14" },
 ]
 

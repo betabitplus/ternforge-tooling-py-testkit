@@ -26,10 +26,6 @@ from py_lib_testkit._internal.test_support._vcr_shared import (
     to_bytes as to_bytes,
 )
 from py_lib_testkit._internal.test_support.console import DemoConsole as DemoConsole
-from py_lib_testkit._internal.test_support.e2e_vcr_guard import (
-    cassette_file_path as cassette_file_path,
-    require_vcr_cassette_or_record_mode as require_vcr_cassette_or_record_mode,
-)
 from py_lib_testkit._internal.test_support.evidence import (
     publish_file as publish_file,
     publish_json as publish_json,
@@ -40,6 +36,7 @@ from py_lib_testkit._internal.test_support.images import (
     save_test_output_image as save_test_output_image,
 )
 from py_lib_testkit._internal.test_support.paths import (
+    cassette_file_path as cassette_file_path,
     get_test_data_path as get_test_data_path,
     get_test_output_dir as get_test_output_dir,
     get_test_output_path as get_test_output_path,

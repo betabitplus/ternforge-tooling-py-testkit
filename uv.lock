@@ -1994,8 +1994,8 @@ wheels = [
 
 [[package]]
 name = "py-lib-policy"
-version = "1.2.4"
-source = { git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git?tag=v1.2.4#5e5ece0595325ffa177dbdfb4f3999ac76c67f79" }
+version = "1.2.5"
+source = { git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git?tag=v1.2.5#43f0f85c124f9024bf081f1c037582c6a9d39d40" }
 
 [[package]]
 name = "py-lib-runtime"
@@ -2014,6 +2014,7 @@ dependencies = [
     { name = "nest-asyncio" },
     { name = "pillow" },
     { name = "py-lib-runtime" },
+    { name = "pytest" },
     { name = "rich" },
 ]
 
@@ -2024,6 +2025,7 @@ dev = [
     { name = "check-manifest" },
     { name = "check-wheel-contents" },
     { name = "commitizen" },
+    { name = "defusedxml" },
     { name = "deptry" },
     { name = "flake8" },
     { name = "flake8-class-attributes-order" },
@@ -2047,7 +2049,6 @@ dev = [
     { name = "py-lib-policy" },
     { name = "pyproject-fmt" },
     { name = "pyright" },
-    { name = "pytest" },
     { name = "pytest-bdd" },
     { name = "pytest-cov" },
     { name = "pytest-randomly" },
@@ -2070,12 +2071,6 @@ docs = [
     { name = "sphinx-gallery" },
     { name = "sphinxcontrib-mermaid" },
 ]
-specifications = [
-    { name = "allure-pytest-bdd" },
-    { name = "pytest" },
-    { name = "pytest-bdd" },
-    { name = "pytest-recording" },
-]
 
 [package.metadata]
 requires-dist = [
@@ -2083,6 +2078,7 @@ requires-dist = [
     { name = "nest-asyncio", specifier = ">=1.6" },
     { name = "pillow", specifier = ">=11" },
     { name = "py-lib-runtime", git = "https://github.com/betabitplus/ternforge-tooling-py-runtime.git?tag=v1.1.7" },
+    { name = "pytest", specifier = ">=9.1.0" },
     { name = "rich", specifier = ">=14" },
 ]
 
@@ -2093,6 +2089,7 @@ dev = [
     { name = "check-manifest", specifier = ">=0.51" },
     { name = "check-wheel-contents", specifier = ">=0.6.1" },
     { name = "commitizen", specifier = ">=4.16.3" },
+    { name = "defusedxml", specifier = ">=0.7.1" },
     { name = "deptry", specifier = ">=0.25.1" },
     { name = "flake8", specifier = ">=7.3" },
     { name = "flake8-class-attributes-order", specifier = ">=0.3" },
@@ -2113,10 +2110,9 @@ dev = [
     { name = "pillow", specifier = ">=12.2" },
     { name = "pip-audit", specifier = ">=2.10.1" },
     { name = "pre-commit", specifier = ">=4.6.0" },
-    { name = "py-lib-policy", git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git?tag=v1.2.4" },
+    { name = "py-lib-policy", git = "https://github.com/betabitplus/ternforge-tooling-py-policy.git?tag=v1.2.5" },
     { name = "pyproject-fmt", specifier = ">=2.23.0" },
     { name = "pyright", specifier = ">=1.1.410" },
-    { name = "pytest", specifier = ">=9.1.0" },
     { name = "pytest-bdd", specifier = ">=8.1,<9" },
     { name = "pytest-cov", specifier = ">=7.1.0" },
     { name = "pytest-randomly", specifier = ">=4.1.0" },
@@ -2138,12 +2134,6 @@ docs = [
     { name = "sphinx", specifier = ">=8.2.3" },
     { name = "sphinx-gallery", specifier = ">=0.21.0" },
     { name = "sphinxcontrib-mermaid", specifier = ">=2.1.0" },
-]
-specifications = [
-    { name = "allure-pytest-bdd", specifier = ">=2.16,<3" },
-    { name = "pytest", specifier = ">=9.1.0" },
-    { name = "pytest-bdd", specifier = ">=8.1,<9" },
-    { name = "pytest-recording", specifier = ">=0.13.4" },
 ]
 
 [[package]]

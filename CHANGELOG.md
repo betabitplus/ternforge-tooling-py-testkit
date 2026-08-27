@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.2.0...v2.2.1) (2026-08-27)
+
+
+### Bug Fixes
+
+* export trace metadata before enforcement ([#122](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/122)) ([df092fa](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/df092fac4bcffb5b149bcfd50fe970c1d972d995))
+
 ## [2.2.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.1.2...v2.2.0) (2026-08-27)
 
 

@@ -60,23 +60,25 @@ def pytest_collection_modifyitems(
     config: pytest.Config,
     items: list[pytest.Item],
 ) -> None:
-    """Normalize trace metadata and fail collection for orphan tests when enabled."""
-    if not config.getini(_TRACEABILITY_INI):
-        return
-
+    """Export declared trace metadata and optionally reject orphan tests."""
+    require_trace = config.getini(_TRACEABILITY_INI)
     violations = [
-        violation for item in items if (violation := _trace_item(item)) is not None
+        violation
+        for item in items
+        if (violation := _trace_item(item, require_trace=require_trace)) is not None
     ]
     if violations:
         lines = ["Ternforge traceability collection failed:", *violations]
         raise pytest.UsageError("\n".join(lines))
 
 
-def _trace_item(item: pytest.Item) -> str | None:
-    """Attach normalized trace properties or return one collection violation."""
+def _trace_item(item: pytest.Item, *, require_trace: bool) -> str | None:
+    """Attach declared trace properties or return one collection violation."""
     requirements = _requirement_refs(item)
     if not requirements:
-        return f"  - untraced test: {item.nodeid}"
+        if require_trace:
+            return f"  - untraced test: {item.nodeid}"
+        return None
 
     kind = _verification_kind(item)
     if kind is None:

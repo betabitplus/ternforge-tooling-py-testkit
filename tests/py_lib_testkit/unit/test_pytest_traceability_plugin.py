@@ -234,7 +234,7 @@ def test_bad_reference():
     result.stderr.fnmatch_lines(["*invalid requirement reference: ROUTE_FALLBACK*"])
 
 
-def test_plugin_is_inert_until_traceability_is_enabled(
+def test_untraced_test_remains_allowed_until_orphan_enforcement_is_enabled(
     pytester: pytest.Pytester,
 ) -> None:
     pytester.makepyfile(
@@ -247,3 +247,30 @@ def test_untraced_legacy_suite():
     result = pytester.runpytest()
 
     result.assert_outcomes(passed=1)
+
+
+def test_declared_trace_exports_before_orphan_enforcement_is_enabled(
+    pytester: pytest.Pytester,
+) -> None:
+    pytester.makepyfile(
+        """
+import pytest
+
+@pytest.mark.verifies("REQ_INCREMENTAL_ROLLOUT")
+@pytest.mark.verification_kind("integration")
+def test_traced_pilot():
+    assert True
+
+def test_untraced_legacy_suite():
+    assert True
+"""
+    )
+    report = pytester.path / "report.xml"
+
+    result = pytester.runpytest(f"--junitxml={report}")
+
+    result.assert_outcomes(passed=2)
+    assert _properties(report, "test_traced_pilot") == {
+        "verification_kind": "integration",
+        "verifies": "REQ_INCREMENTAL_ROLLOUT",
+    }

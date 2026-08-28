@@ -144,6 +144,78 @@ def fallback_route_is_used():
     assert properties["gherkin_scenario"] == "Failed route falls back"
 
 
+def test_multiple_gherkin_requirement_tags_share_one_bdd_kind(
+    pytester: pytest.Pytester,
+) -> None:
+    _enable_plugin(pytester)
+    feature = pytester.path / "features" / "session.feature"
+    feature.parent.mkdir()
+    feature.write_text(
+        """@REQ_SESSION_LIFECYCLE[revision==1]
+Feature: Session lifecycle
+
+  @REQ_SESSION_PERSISTENCE[revision==1]
+  Scenario: Save and load
+    Given a session can be persisted
+    When it is loaded
+    Then its state is preserved
+""",
+        encoding="utf-8",
+    )
+    pytester.makepyfile(
+        test_scenarios="""
+from pytest_bdd import given, scenarios, then, when
+
+scenarios("features")
+
+@given("a session can be persisted")
+def session_can_be_persisted():
+    return None
+
+@when("it is loaded")
+def session_is_loaded():
+    return None
+
+@then("its state is preserved")
+def session_state_is_preserved():
+    return None
+"""
+    )
+    report = pytester.path / "report.xml"
+
+    result = pytester.runpytest_subprocess("-n", "2", f"--junitxml={report}")
+
+    result.assert_outcomes(passed=1)
+    properties = _properties(report, "test_save_and_load")
+    assert set(properties["verifies"].split(",")) == {
+        "REQ_SESSION_LIFECYCLE[revision==1]",
+        "REQ_SESSION_PERSISTENCE[revision==1]",
+    }
+    assert properties["verification_kind"] == "bdd"
+
+
+def test_conflicting_verification_kinds_fail_collection(
+    pytester: pytest.Pytester,
+) -> None:
+    _enable_plugin(pytester)
+    pytester.makepyfile(
+        """
+import pytest
+
+@pytest.mark.verifies("REQ_CONFLICT")
+@pytest.mark.verification_kind("unit")
+@pytest.mark.verification_kind("integration")
+def test_conflicting_kind():
+    assert True
+"""
+    )
+
+    result = pytester.runpytest()
+
+    assert result.ret == pytest.ExitCode.USAGE_ERROR
+    result.stderr.fnmatch_lines(["*verification_kind declarations must agree*"])
+
+
 def test_multiple_requirement_links_survive_skip(pytester: pytest.Pytester) -> None:
     _enable_plugin(pytester)
     pytester.makepyfile(

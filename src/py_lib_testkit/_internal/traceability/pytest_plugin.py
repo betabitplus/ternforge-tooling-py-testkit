@@ -133,20 +133,27 @@ def _requirement_refs(item: pytest.Item) -> tuple[str, ...]:
 
 
 def _verification_kind(item: pytest.Item) -> str | None:
-    """Resolve the explicitly declared verification evidence kind."""
+    """Resolve one evidence kind while tolerating repeated identical declarations."""
     markers = list(item.iter_markers(name=_KIND_MARKER))
     if not markers:
         return None
-    if len(markers) != 1 or len(markers[0].args) != 1:
-        msg = f"{item.nodeid}: verification_kind expects exactly one value"
-        raise pytest.UsageError(msg)
 
-    value = markers[0].args[0]
-    if not isinstance(value, str) or value not in _VALID_KINDS:
-        allowed = ", ".join(sorted(_VALID_KINDS))
-        msg = f"{item.nodeid}: verification_kind must be one of: {allowed}"
+    values: list[str] = []
+    for marker in markers:
+        if len(marker.args) != 1:
+            msg = f"{item.nodeid}: verification_kind expects exactly one value"
+            raise pytest.UsageError(msg)
+        value = marker.args[0]
+        if not isinstance(value, str) or value not in _VALID_KINDS:
+            allowed = ", ".join(sorted(_VALID_KINDS))
+            msg = f"{item.nodeid}: verification_kind must be one of: {allowed}"
+            raise pytest.UsageError(msg)
+        values.append(value)
+
+    if len(set(values)) != 1:
+        msg = f"{item.nodeid}: verification_kind declarations must agree"
         raise pytest.UsageError(msg)
-    return value
+    return values[0]
 
 
 def _set_user_property(item: pytest.Item, name: str, value: str) -> None:

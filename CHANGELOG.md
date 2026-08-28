@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.2](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.2.1...v2.2.2) (2026-08-28)
+
+
+### Bug Fixes
+
+* support multi-requirement BDD trace metadata ([#124](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/124)) ([bf364e8](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/bf364e84ce6229742fbbd650175d805b040c586c))
+
 ## [2.2.1](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.2.0...v2.2.1) (2026-08-27)
 
 

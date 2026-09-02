@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
@@ -62,13 +63,55 @@ def test_route_order():
     )
     report = pytester.path / "report.xml"
 
-    result = pytester.runpytest(f"--junitxml={report}")
+    result = pytester.runpytest(
+        "-p",
+        "no:allure_pytest",
+        f"--junitxml={report}",
+    )
 
     result.assert_outcomes(passed=1)
     assert _properties(report, "test_route_order") == {
         "verification_kind": "unit",
         "verifies": "TREQ_ROUTE_ORDER[revision==2]",
     }
+
+
+def test_traced_test_exports_allure_labels_when_plugin_is_active(
+    pytester: pytest.Pytester,
+) -> None:
+    _enable_plugin(pytester)
+    pytester.makepyfile(
+        """
+import pytest
+
+@pytest.mark.verifies(
+    "REQ_ROUTE_FALLBACK[revision==3]",
+    "TREQ_ROUTE_ORDER[revision==2]",
+)
+@pytest.mark.verification_kind("integration")
+def test_route_order():
+    assert True
+"""
+    )
+    report = pytester.path / "report.xml"
+    allure_results = pytester.path / "allure-results"
+
+    result = pytester.runpytest(
+        f"--junitxml={report}",
+        f"--alluredir={allure_results}",
+    )
+
+    result.assert_outcomes(passed=1)
+    assert _properties(report, "test_route_order") == {
+        "verification_kind": "integration",
+        "verifies": ("REQ_ROUTE_FALLBACK[revision==3],TREQ_ROUTE_ORDER[revision==2]"),
+    }
+    result_file = next(allure_results.glob("*-result.json"))
+    payload = json.loads(result_file.read_text(encoding="utf-8"))
+    labels = {(str(label["name"]), str(label["value"])) for label in payload["labels"]}
+    assert ("layer", "integration") in labels
+    assert ("requirement", "REQ_ROUTE_FALLBACK") in labels
+    assert ("requirement", "TREQ_ROUTE_ORDER") in labels
 
 
 def test_non_bdd_test_requires_explicit_kind_even_in_named_directory(

@@ -88,6 +88,7 @@ def _trace_item(item: pytest.Item, *, require_trace: bool) -> str | None:
 
     _set_user_property(item, "verifies", ",".join(requirements))
     _set_user_property(item, "verification_kind", kind)
+    _export_allure_labels(item, requirements=requirements, kind=kind)
     return None
 
 
@@ -154,6 +155,33 @@ def _verification_kind(item: pytest.Item) -> str | None:
         msg = f"{item.nodeid}: verification_kind declarations must agree"
         raise pytest.UsageError(msg)
     return values[0]
+
+
+def _export_allure_labels(
+    item: pytest.Item,
+    *,
+    requirements: tuple[str, ...],
+    kind: str,
+) -> None:
+    """Mirror trace metadata into Allure when the official plugin is active."""
+    if not item.config.pluginmanager.hasplugin("allure_pytest"):
+        return
+
+    _add_allure_label(item, "layer", kind)
+    for requirement in requirements:
+        _add_allure_label(item, "requirement", requirement.split("[", 1)[0])
+
+
+def _add_allure_label(item: pytest.Item, name: str, value: str) -> None:
+    """Add one deterministic Allure label marker without duplicates."""
+    existing = {
+        (str(marker.kwargs.get("label_type", "")), str(marker.args[0]))
+        for marker in item.iter_markers(name="allure_label")
+        if len(marker.args) == 1
+    }
+    if (name, value) in existing:
+        return
+    item.add_marker(pytest.mark.allure_label(value, label_type=name))
 
 
 def _set_user_property(item: pytest.Item, name: str, value: str) -> None:

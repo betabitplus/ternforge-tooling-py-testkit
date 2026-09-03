@@ -42,7 +42,7 @@ entry-points.pytest11.py-lib-testkit = "py_lib_testkit._internal.traceability.py
 
 [dependency-groups]
 dev = [
-  "allure-pytest-bdd>=2.16,<3",
+  "allure-pytest>=2.16,<3",
   # Security auditing
   "bandit>=1.9.4",
   "check-manifest>=0.51",

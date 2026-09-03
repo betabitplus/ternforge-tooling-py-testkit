@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.2.2...v2.3.0) (2026-09-03)
+
+
+### Features
+
+* export trace labels to Allure ([#126](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/126)) ([2071f87](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/2071f876479a26c305c9c3a80d7acaac7de31fe2))
+
 ## [2.2.2](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.2.1...v2.2.2) (2026-08-28)
 
 

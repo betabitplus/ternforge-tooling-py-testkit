@@ -40,11 +40,8 @@ from py_lib_testkit._internal.test_support.paths import (
     get_test_data_path as get_test_data_path,
     get_test_output_dir as get_test_output_dir,
     get_test_output_path as get_test_output_path,
-    get_workbench_output_dir as get_workbench_output_dir,
-    get_workbench_output_path as get_workbench_output_path,
 )
 from py_lib_testkit._internal.test_support.setup import (
-    configure_direct_module_process as configure_direct_module_process,
     configure_pytest_process as configure_pytest_process,
     run_async as run_async,
 )

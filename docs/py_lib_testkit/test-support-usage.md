@@ -8,14 +8,14 @@ description: Shared test helpers exported by py_lib_testkit.
 
 ## 1.1 Overview
 
-`test_support` contains shared test and workbench utilities exported by `py_lib_testkit`. It is primarily for tests, especially e2e tests that use VCR cassettes.
+`test_support` contains shared test utilities exported by `py_lib_testkit`. It is primarily for tests, especially e2e tests that use VCR cassettes.
 
 ## 1.2 Features
 
 - Provides standard Pytest process configuration.
 - Includes VCR request matchers.
-- Standardizes test and workbench data/output path resolution.
-- Exposes developer productivity helpers for workbench and interactive runs.
+- Standardizes test data/output path resolution.
+- Exposes developer productivity helpers for interactive async runs.
 - Offers comparison helpers for images, JSON bodies, and multipart requests.
 - Publishes typed evidence to IPython and, when installed, Allure.
 
@@ -36,11 +36,7 @@ configure_pytest_process()
 Use these to fetch standardized, ignored directories for test inputs and outputs.
 
 ```python
-from py_lib_testkit import (
-    get_test_data_path,
-    get_test_output_path,
-    get_workbench_output_path,
-)
+from py_lib_testkit import get_test_data_path, get_test_output_path
 
 # Test outputs go under ignored output directories
 data_path = get_test_data_path("sample_lib")
@@ -48,34 +44,17 @@ output_path = get_test_output_path(
     "output.txt",
     module_name="sample_lib",
 )
-
-# Workbench outputs go under workbench/.outputs
-wb_path = get_workbench_output_path(
-    "demo.json",
-    module_name="my_demo",
-)
 ```
 
-### 1.3.3 Workbench and Demo Scripts
+### 1.3.3 Interactive Async Helpers
 
-Use these for direct workbench-module execution and async code that must also work in an already-running event loop.
+Use `run_async` when interactive code must also work inside an already-running event loop.
 
 ```python
-from pathlib import Path
-
-from py_lib_testkit import (
-    DemoConsole,
-    configure_direct_module_process,
-    run_async,
-)
-
-configure_direct_module_process(
-    main_file=__file__,
-    package_root=Path(__file__).resolve().parents[3],
-)
+from py_lib_testkit import DemoConsole, run_async
 
 console = DemoConsole()
-console.print("Running demo...")
+console.print("Running interactive probe...")
 ```
 
 ### 1.3.5 Validating HTTP Requests and Images

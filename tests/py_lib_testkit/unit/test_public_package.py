@@ -8,7 +8,6 @@ import pytest
 import py_lib_testkit
 from py_lib_testkit import (
     ProjectToolingConfig,
-    configure_direct_module_process,
     get_project_tooling_config,
     get_repo_root,
     multipart_signature_prefix,
@@ -77,23 +76,6 @@ def test_multipart_signature_uses_consuming_repository_prefix(
     _write_project(tmp_path)
     monkeypatch.chdir(tmp_path)
     assert multipart_signature_prefix() == b"SAMPLE_LIB_MULTIPART_SIGNATURE:"
-
-
-def test_configure_direct_module_process_preserves_runtime_logging_contract(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    _write_project(tmp_path)
-    package_root = tmp_path / "tests" / "sample_lib" / "e2e"
-    package_root.mkdir(parents=True)
-    main_file = package_root / "test_case.py"
-    main_file.write_text("", encoding="utf-8")
-    monkeypatch.setenv("SAMPLE_LIB_LOG_LEVEL", "ERROR")
-    configure_direct_module_process(
-        main_file=str(main_file),
-        package_root=package_root,
-        configure_logging_from_env_suffix="LOG_LEVEL",
-    )
 
 
 def test_run_async_works_inside_an_active_event_loop() -> None:

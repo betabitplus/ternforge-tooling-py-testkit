@@ -58,9 +58,3 @@ Run structural and artifact checks directly when needed:
 uv run py-lib-policy .
 uv build
 ```
-
-Use the running-loop diagnostic helper only for real workbench modules:
-
-```bash
-uv run python scripts/reproduce_running_loop.py workbench.py_lib_testkit.<module>
-```

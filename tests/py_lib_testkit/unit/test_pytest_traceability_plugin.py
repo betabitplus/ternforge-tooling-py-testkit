@@ -96,7 +96,7 @@ def test_route_order():
     report = pytester.path / "report.xml"
     allure_results = pytester.path / "allure-results"
 
-    result = pytester.runpytest(
+    result = pytester.runpytest_subprocess(
         f"--junitxml={report}",
         f"--alluredir={allure_results}",
     )

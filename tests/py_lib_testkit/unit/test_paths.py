@@ -40,11 +40,6 @@ def test_paths_resolve_from_explicit_start_path(tmp_path: Path) -> None:
         module_name="sample_lib",
         start=tmp_path,
     ) == (tmp_path / "tests" / ".outputs" / "sample_lib" / "sample.png")
-    assert paths.get_workbench_output_path(
-        "result.json",
-        module_name="probe",
-        start=tmp_path,
-    ) == (tmp_path / "workbench" / ".outputs" / "probe" / "result.json")
 
 
 # =============================================================================

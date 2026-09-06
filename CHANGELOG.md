@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.2](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.3.1...v2.3.2) (2026-09-06)
+
+
+### Bug Fixes
+
+* align tooling source pins ([#130](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/130)) ([82fe2bd](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/82fe2bd702ca75eee3177f02d2126debfe7ebfbd))
+
 ## [2.3.1](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.3.0...v2.3.1) (2026-09-06)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.3.0...v2.3.1) (2026-09-06)
+
+
+### Bug Fixes
+
+* remove legacy workbench support ([#128](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/128)) ([6355d2b](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/6355d2b066aa90ef5559beef815a457f3c1cec43))
+
 ## [2.3.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.2.2...v2.3.0) (2026-09-03)
 
 

@@ -2467,7 +2467,7 @@ dependencies = [
 
 [[package]]
 name = "py-lib-testkit"
-version = "2.3.1"
+version = "2.3.2"
 source = { editable = "." }
 dependencies = [
     { name = "ipython" },

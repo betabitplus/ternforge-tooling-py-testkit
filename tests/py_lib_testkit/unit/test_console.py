@@ -1,9 +1,8 @@
 """DemoConsole JSON rendering tests.
 
 Why:
-    Many repositories use `DemoConsole` for manual workbench scripts executed via
-    `python -m ...`. JSON rendering must be stable and must not crash when
-    passing options through to `json.dumps`.
+    Interactive diagnostics use `DemoConsole` for structured output. JSON rendering
+    must be stable and must not crash when passing options through to `json.dumps`.
 """
 
 from __future__ import annotations

@@ -17,7 +17,6 @@ from py_lib_testkit._internal import (
     cassette_file_path as _cassette_file_path,
     compare_optional_json_bodies as _compare_optional_json_bodies,
     compare_optional_multipart_single_file_content as _compare_multipart_content,
-    configure_direct_module_process as _configure_direct_module_process,
     configure_pytest_process as _configure_pytest_process,
     decode_base64_bytes as _decode_base64_bytes,
     describe_first_difference as _describe_first_difference,
@@ -27,8 +26,6 @@ from py_lib_testkit._internal import (
     get_test_data_path as _get_test_data_path,
     get_test_output_dir as _get_test_output_dir,
     get_test_output_path as _get_test_output_path,
-    get_workbench_output_dir as _get_workbench_output_dir,
-    get_workbench_output_path as _get_workbench_output_path,
     image_changed as _image_changed,
     is_png as _is_png,
     json_semantic_body as _json_semantic_body,
@@ -73,22 +70,6 @@ def configure_pytest_process(*, start: Path | None = None) -> None:
     _configure_pytest_process(start=start)
 
 
-def configure_direct_module_process(
-    *,
-    main_file: str | None,
-    package_root: Path,
-    configure_logging_from_env: str | None = None,
-    configure_logging_from_env_suffix: str | None = None,
-) -> None:
-    """Configure one workbench package for direct `python -m ...` execution."""
-    _configure_direct_module_process(
-        main_file=main_file,
-        package_root=package_root,
-        configure_logging_from_env=configure_logging_from_env,
-        configure_logging_from_env_suffix=configure_logging_from_env_suffix,
-    )
-
-
 # =============================================================================
 # Path Facade
 # =============================================================================
@@ -121,25 +102,6 @@ def get_test_output_path(
 ) -> Path:
     """Return an ignored test output file path."""
     return _get_test_output_path(filename, module_name=module_name, start=start)
-
-
-def get_workbench_output_dir(
-    module_name: str | None = None,
-    *,
-    start: Path | None = None,
-) -> Path:
-    """Return the ignored workbench output directory for a module or repo."""
-    return _get_workbench_output_dir(module_name, start=start)
-
-
-def get_workbench_output_path(
-    filename: str,
-    *,
-    module_name: str | None = None,
-    start: Path | None = None,
-) -> Path:
-    """Return an ignored workbench output file path."""
-    return _get_workbench_output_path(filename, module_name=module_name, start=start)
 
 
 # =============================================================================

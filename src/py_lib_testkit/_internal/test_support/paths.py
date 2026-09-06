@@ -56,25 +56,3 @@ def get_test_output_path(
 ) -> Path:
     """Return an ignored test output file path."""
     return get_test_output_dir(module_name, start=start) / filename
-
-
-def get_workbench_output_dir(
-    module_name: str | None = None,
-    *,
-    start: Path | None = None,
-) -> Path:
-    """Return the ignored workbench output directory for a module or repo."""
-    output_dir = get_repo_root(start=start) / "workbench" / ".outputs"
-    if module_name is not None:
-        output_dir /= module_name
-    return output_dir
-
-
-def get_workbench_output_path(
-    filename: str,
-    *,
-    module_name: str | None = None,
-    start: Path | None = None,
-) -> Path:
-    """Return an ignored workbench output file path."""
-    return get_workbench_output_dir(module_name, start=start) / filename

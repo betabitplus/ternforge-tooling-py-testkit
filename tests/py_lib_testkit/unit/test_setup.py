@@ -1,8 +1,7 @@
-"""Direct-run and test-process setup helper tests.
+"""Async and pytest-process setup helper tests.
 
-Why:
-    Protects shared setup helpers from import-time repo discovery while keeping
-    dotenv and logging policy resolution scoped to the consuming repository.
+Protect shared setup helpers from import-time repo discovery while keeping pytest
+logging policy resolution scoped to the consuming repository.
 """
 
 from __future__ import annotations
@@ -43,51 +42,6 @@ def test_configure_pytest_process_quiets_primary_package(
     assert calls == [{"py_lib_testkit": "WARNING"}]
 
 
-def test_configure_direct_module_process_uses_runtime_logging(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    _write_pyproject(tmp_path)
-    package_root = tmp_path / "tests" / "sample_lib" / "e2e"
-    package_root.mkdir(parents=True)
-    main_file = package_root / "test_case.py"
-    monkeypatch.chdir(_tooling_package_root())
-    setup = _fresh_setup_module()
-    settings = object()
-    build_calls: list[tuple[tuple[str], dict[str, object]]] = []
-    configure_calls: list[tuple[tuple[object], dict[str, str]]] = []
-    monkeypatch.setattr(setup, "_apply_nest_asyncio_if_available", lambda: None)
-    monkeypatch.setattr(
-        setup,
-        "build_logging_settings",
-        lambda *args, **kwargs: build_calls.append((args, kwargs)) or settings,
-    )
-    monkeypatch.setattr(
-        setup,
-        "configure_logging",
-        lambda *args, **kwargs: configure_calls.append((args, kwargs)),
-    )
-    monkeypatch.setenv("SAMPLE_LIB_LOG_LEVEL", "ERROR")
-
-    setup.configure_direct_module_process(
-        main_file=str(main_file),
-        package_root=package_root,
-        configure_logging_from_env_suffix="LOG_LEVEL",
-    )
-
-    assert build_calls == [
-        (
-            ("sample_lib",),
-            {
-                "default_local_level": "DEBUG",
-                "env_prefix": "SAMPLE_LIB",
-                "quiet_module_names": None,
-            },
-        )
-    ]
-    assert configure_calls == [((settings,), {"level": "ERROR"})]
-
-
 # =============================================================================
 # Helpers
 # =============================================================================
@@ -105,22 +59,6 @@ def _tooling_package_root() -> Path:
             return parent
     msg = "Could not locate py-lib-testkit package root."
     raise RuntimeError(msg)
-
-
-def _write_pyproject(project_root: Path) -> None:
-    """Write a minimal Ternforge project manifest for setup support tests."""
-    project_root.joinpath("pyproject.toml").write_text(
-        """[project]
-name = "sample-lib"
-version = "1.2.3"
-
-[tool.ternforge]
-primary_package = "sample_lib"
-package_names = [ "sample_lib" ]
-env_prefix = "SAMPLE_LIB"
-""",
-        encoding="utf-8",
-    )
 
 
 def _fresh_setup_module() -> ModuleType:

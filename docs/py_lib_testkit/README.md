@@ -1,6 +1,6 @@
 # py-lib-testkit
 
-`py-lib-testkit` provides reusable public helpers for Python library tests, VCR-backed end-to-end checks, output paths, image comparisons, and interactive workbench runs.
+`py-lib-testkit` provides reusable public helpers for Python library tests, VCR-backed end-to-end checks, output paths, image comparisons, and interactive async runs.
 
 Use only imports from `py_lib_testkit`; private implementation modules are not part of the supported API.
 

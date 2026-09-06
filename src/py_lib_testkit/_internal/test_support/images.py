@@ -1,4 +1,4 @@
-"""Reusable image helpers for tests and manual workbench probes.
+"""Reusable image helpers for tests and interactive probes.
 
 Why:
     Keeps generic Pillow image comparison and ignored-output saving out of

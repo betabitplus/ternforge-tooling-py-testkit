@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.3](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.3.2...v2.3.3) (2026-09-07)
+
+
+### Bug Fixes
+
+* finish template metadata cleanup ([#133](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/133)) ([36262bf](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/36262bf8119a2478865ff4e2d1aef48c9a7bc108))
+
 ## [2.3.2](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.3.1...v2.3.2) (2026-09-06)
 
 

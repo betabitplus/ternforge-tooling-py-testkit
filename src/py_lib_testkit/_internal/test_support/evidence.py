@@ -44,6 +44,15 @@ def _qualified_name(value: object) -> str:
     return ".".join(part for part in (module, qualname) if part)
 
 
+def _description(value: object) -> str:
+    """Return documentation authored on the contract itself, never inherited class docs."""
+    if inspect.isclass(value):
+        raw = vars(value).get("__doc__")
+    else:
+        raw = getattr(value, "__doc__", None)
+    return inspect.cleandoc(raw) if isinstance(raw, str) else ""
+
+
 def _contract_payload(name: str, value: object) -> dict[str, object]:
     """Describe one live schema or callable without duplicating authored contracts."""
     schema_factory = getattr(value, "model_json_schema", None)
@@ -55,7 +64,7 @@ def _contract_payload(name: str, value: object) -> dict[str, object]:
             "name": name,
             "kind": "schema",
             "qualified_name": _qualified_name(value),
-            "description": inspect.getdoc(value) or "",
+            "description": _description(value),
             "schema": schema,
         }
     if callable(value):
@@ -69,7 +78,7 @@ def _contract_payload(name: str, value: object) -> dict[str, object]:
             "name": name,
             "kind": "callable",
             "qualified_name": _qualified_name(value),
-            "description": inspect.getdoc(value) or "",
+            "description": _description(value),
             "signature": signature,
         }
     msg = "Contract evidence requires a Pydantic-style schema class or callable"

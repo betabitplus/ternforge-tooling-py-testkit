@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.1](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.4.0...v2.4.1) (2026-09-09)
+
+
+### Bug Fixes
+
+* omit inherited schema docs from contract evidence ([#139](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/139)) ([0fc7d69](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/0fc7d6973ba31273d36ed3c514adfd050b8a66f2))
+
 ## [2.4.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.3.4...v2.4.0) (2026-09-09)
 
 

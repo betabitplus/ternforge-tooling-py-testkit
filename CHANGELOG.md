@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.4](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.3.3...v2.3.4) (2026-09-09)
+
+
+### Bug Fixes
+
+* use Rich native Jupyter rendering ([#135](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/135)) ([b896e9a](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/b896e9a1290559f41823fb2bcd777b629069fd3c))
+
 ## [2.3.3](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.3.2...v2.3.3) (2026-09-07)
 
 

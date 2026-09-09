@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.3.4...v2.4.0) (2026-09-09)
+
+
+### Features
+
+* capture BDD execution contracts ([#137](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/137)) ([b8bf978](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/b8bf9788715300220c50413639168245d1e5ecef))
+
 ## [2.3.4](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.3.3...v2.3.4) (2026-09-09)
 
 

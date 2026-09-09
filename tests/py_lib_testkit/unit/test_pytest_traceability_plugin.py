@@ -187,6 +187,86 @@ def fallback_route_is_used():
     assert properties["gherkin_scenario"] == "Failed route falls back"
 
 
+def test_bdd_steps_export_exact_binding_source_as_allure_evidence(
+    pytester: pytest.Pytester,
+) -> None:
+    _enable_plugin(pytester)
+    feature = pytester.path / "features" / "usage.feature"
+    feature.parent.mkdir()
+    feature.write_text(
+        (
+            "@REQ_PUBLIC_USAGE\n"
+            "Feature: Public usage\n\n"
+            "  Scenario: Execute through the public API\n"
+            "    Given a public router\n"
+            "    When the client calls query\n"
+            "    Then a response is returned\n"
+        ),
+        encoding="utf-8",
+    )
+    pytester.makeconftest(
+        """
+import allure
+
+_steps = {}
+
+def pytest_bdd_before_step(request, step):
+    context = allure.step(f"{step.keyword} {step.name}")
+    context.__enter__()
+    _steps[request.node.nodeid] = context
+
+def pytest_bdd_after_step(request):
+    _steps.pop(request.node.nodeid).__exit__(None, None, None)
+"""
+    )
+    pytester.makepyfile(
+        test_scenarios="""
+from pytest_bdd import given, scenarios, then, when
+
+scenarios("features")
+
+@given("a public router", target_fixture="public_router")
+def public_router():
+    return object()
+
+@when("the client calls query")
+def call_query(public_router):
+    return public_router
+
+@then("a response is returned")
+def response_is_returned():
+    assert True
+"""
+    )
+    allure_results = pytester.path / "allure-results"
+
+    result = pytester.runpytest_subprocess(f"--alluredir={allure_results}")
+
+    result.assert_outcomes(passed=1)
+    result_file = next(allure_results.glob("*-result.json"))
+    payload = json.loads(result_file.read_text(encoding="utf-8"))
+    steps = payload["steps"]
+    assert len(steps) == 3
+    for step in steps:
+        implementations = [
+            attachment
+            for attachment in step.get("attachments", [])
+            if attachment.get("type")
+            == "application/vnd.ternforge.bdd-implementation+json"
+        ]
+        assert len(implementations) == 1
+        attachment = implementations[0]
+        assert attachment["name"] == "Ternforge BDD implementation"
+        source = allure_results / attachment["source"]
+        implementation = json.loads(source.read_text(encoding="utf-8"))
+        assert implementation["schema_version"] == 1
+        assert implementation["path"] == "test_scenarios.py"
+        assert implementation["start_line"] <= implementation["end_line"]
+        assert implementation["source"].startswith("@")
+        assert "def " in implementation["source"]
+        assert "public_router" not in implementation.get("arguments", {})
+
+
 def test_multiple_gherkin_requirement_tags_share_one_bdd_kind(
     pytester: pytest.Pytester,
 ) -> None:

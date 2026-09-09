@@ -27,6 +27,7 @@ from py_lib_testkit._internal.test_support._vcr_shared import (
 )
 from py_lib_testkit._internal.test_support.console import DemoConsole as DemoConsole
 from py_lib_testkit._internal.test_support.evidence import (
+    publish_contract as publish_contract,
     publish_file as publish_file,
     publish_json as publish_json,
     publish_visual_diff as publish_visual_diff,

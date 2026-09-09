@@ -8,6 +8,7 @@ Why:
 from __future__ import annotations
 
 import base64
+import inspect
 import json
 import mimetypes
 from importlib import import_module
@@ -18,6 +19,7 @@ from IPython.core.getipython import get_ipython
 from IPython.display import HTML, JSON, FileLink, Image, Video, display
 
 _ALLURE_IMAGE_DIFF = "application/vnd.allure.image.diff"
+_CONTRACT_MEDIA_TYPE = "application/vnd.ternforge.contract+json"
 
 
 def publish_json(name: str, payload: object) -> None:
@@ -31,6 +33,61 @@ def publish_json(name: str, payload: object) -> None:
             encoded,
             name=name,
             attachment_type="application/json",
+            extension="json",
+        )
+
+
+def _qualified_name(value: object) -> str:
+    """Return one stable import-style name when the runtime object exposes it."""
+    module = str(getattr(value, "__module__", "") or "")
+    qualname = str(getattr(value, "__qualname__", "") or "")
+    return ".".join(part for part in (module, qualname) if part)
+
+
+def _contract_payload(name: str, value: object) -> dict[str, object]:
+    """Describe one live schema or callable without duplicating authored contracts."""
+    schema_factory = getattr(value, "model_json_schema", None)
+    if callable(schema_factory):
+        schema = schema_factory()
+        json.dumps(schema, ensure_ascii=False)
+        return {
+            "schema_version": 1,
+            "name": name,
+            "kind": "schema",
+            "qualified_name": _qualified_name(value),
+            "description": inspect.getdoc(value) or "",
+            "schema": schema,
+        }
+    if callable(value):
+        try:
+            signature = str(inspect.signature(value))
+        except (TypeError, ValueError) as error:
+            msg = f"Unable to inspect callable contract: {value!r}"
+            raise TypeError(msg) from error
+        return {
+            "schema_version": 1,
+            "name": name,
+            "kind": "callable",
+            "qualified_name": _qualified_name(value),
+            "description": inspect.getdoc(value) or "",
+            "signature": signature,
+        }
+    msg = "Contract evidence requires a Pydantic-style schema class or callable"
+    raise TypeError(msg)
+
+
+def publish_contract(name: str, value: object) -> None:
+    """Publish a contract derived from the live class/function used by the test."""
+    payload = _contract_payload(name, value)
+    encoded = json.dumps(payload, indent=2, ensure_ascii=False)
+    if get_ipython() is not None:
+        display(JSON(payload, expanded=False))
+    allure = _load_allure()
+    if allure is not None:
+        allure.attach(
+            encoded,
+            name=name,
+            attachment_type=_CONTRACT_MEDIA_TYPE,
             extension="json",
         )
 

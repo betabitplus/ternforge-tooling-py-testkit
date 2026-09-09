@@ -7,7 +7,10 @@ rejects orphan tests when a repository opts into traceability enforcement.
 
 from __future__ import annotations
 
+import inspect
+import json
 import re
+from importlib import import_module
 from pathlib import Path
 from typing import Final
 
@@ -18,6 +21,10 @@ _VERIFIES_MARKER: Final = "verifies"
 _KIND_MARKER: Final = "verification_kind"
 _REQUIREMENT_TAG_RE: Final = re.compile(r"^(?:REQ|TREQ)_[A-Z0-9_]+(?:\[[^\]]+\])?$")
 _VALID_KINDS: Final = frozenset({"bdd", "unit", "property", "integration", "e2e"})
+_BDD_IMPLEMENTATION_ATTACHMENT_NAME: Final = "Ternforge BDD implementation"
+_BDD_IMPLEMENTATION_ATTACHMENT_TYPE: Final = (
+    "application/vnd.ternforge.bdd-implementation+json"
+)
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
@@ -111,6 +118,55 @@ def pytest_bdd_before_scenario(
         )
     if scenario_name:
         _set_user_property(node, "gherkin_scenario", str(scenario_name))
+
+
+@pytest.hookimpl(optionalhook=True)
+def pytest_bdd_before_step_call(
+    request: pytest.FixtureRequest,
+    step: object,
+    step_func: object,
+) -> None:
+    """Persist the exact project-owned Python binding executed for one BDD step."""
+    if not request.config.pluginmanager.hasplugin("allure_pytest"):
+        return
+
+    implementation = _bdd_step_implementation(request.config.rootpath, step, step_func)
+    if implementation is None:
+        return
+
+    allure = import_module("allure")
+    allure.attach(
+        json.dumps(implementation, indent=2, ensure_ascii=False),
+        name=_BDD_IMPLEMENTATION_ATTACHMENT_NAME,
+        attachment_type=_BDD_IMPLEMENTATION_ATTACHMENT_TYPE,
+        extension="json",
+    )
+
+
+def _bdd_step_implementation(
+    root: Path,
+    step: object,
+    step_func: object,
+) -> dict[str, object] | None:
+    """Return stable, non-secret source metadata for one executable BDD binding."""
+    source_file = inspect.getsourcefile(step_func)
+    if source_file is None:
+        return None
+    try:
+        source_lines, start_line = inspect.getsourcelines(step_func)
+    except (OSError, TypeError):
+        return None
+
+    return {
+        "schema_version": 1,
+        "keyword": str(getattr(step, "keyword", "") or "").strip(),
+        "text": str(getattr(step, "name", "") or "").strip(),
+        "function": str(getattr(step_func, "__qualname__", "") or ""),
+        "path": _relative_path(root, Path(source_file)),
+        "start_line": start_line,
+        "end_line": start_line + max(0, len(source_lines) - 1),
+        "source": "".join(source_lines).rstrip(),
+    }
 
 
 def _requirement_refs(item: pytest.Item) -> tuple[str, ...]:

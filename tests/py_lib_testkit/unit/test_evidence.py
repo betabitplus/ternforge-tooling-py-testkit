@@ -98,6 +98,10 @@ class _FakeSchema:
         }
 
 
+class _InheritedSchema(_FakeSchema):
+    pass
+
+
 def _sample_tool(*, a: int, b: int) -> int:
     """Add two integers."""
     return a + b
@@ -127,6 +131,19 @@ def test_contract_publishes_live_schema_and_callable(
     assert callable_payload["kind"] == "callable"
     assert callable_payload["signature"] == "(*, a: 'int', b: 'int') -> 'int'"
     assert callable_payload["description"] == "Add two integers."
+
+
+def test_contract_omits_inherited_schema_documentation(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fake = _FakeAllure()
+    _disable_ipython(monkeypatch)
+    monkeypatch.setattr(implementation, "_load_allure", lambda: fake)
+
+    evidence.contract("Response schema", _InheritedSchema)
+
+    payload = json.loads(str(fake.attach.values[0]["body"]))
+    assert payload["description"] == ""
 
 
 def test_contract_rejects_unsupported_values(monkeypatch: pytest.MonkeyPatch) -> None:

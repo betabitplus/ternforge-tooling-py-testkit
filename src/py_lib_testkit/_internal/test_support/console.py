@@ -15,12 +15,11 @@ import json as json_module
 import re
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
-from io import StringIO
 from pathlib import Path
 from typing import Any, override
 
 from IPython.core.getipython import get_ipython
-from IPython.display import HTML, Image, display
+from IPython.display import Image, display
 from rich.console import Console
 
 from py_lib_testkit._internal.test_support._console_appearance import (
@@ -92,17 +91,6 @@ class DemoConsole(Console):
             msg = "print_json() expects a dict, list, or JSON string."
             raise TypeError(msg)
 
-        if self._in_notebook_output():
-            self._display_via_rich_html(
-                lambda render_console: render_console.print(
-                    json_text,
-                    soft_wrap=True,
-                    markup=False,
-                    highlight=False,
-                )
-            )
-            return
-
         json_kwargs = dict(kwargs)
         json_kwargs.setdefault("soft_wrap", True)
         json_kwargs["markup"] = False
@@ -119,16 +107,6 @@ class DemoConsole(Console):
             if json_text is not None:
                 self.print_json(json_text, **kwargs)
                 return
-        if self._in_notebook_output():
-            notebook_kwargs = dict(kwargs)
-            notebook_kwargs.pop("file", None)
-            self._display_via_rich_html(
-                lambda render_console: render_console.print(
-                    *objects,
-                    **notebook_kwargs,
-                )
-            )
-            return
         super().print(*objects, **kwargs)
 
     def rule(
@@ -139,17 +117,7 @@ class DemoConsole(Console):
         style: Any = "rule.line",
         align: Any = "center",
     ) -> None:
-        """Render rules through Rich HTML in notebooks to preserve styling and wrap."""
-        if self._in_notebook_output():
-            self._display_via_rich_html(
-                lambda render_console: render_console.rule(
-                    title,
-                    characters=characters,
-                    style=style,
-                    align=align,
-                )
-            )
-            return
+        """Render a rule through Rich's native terminal or Jupyter backend."""
         super().rule(
             title,
             characters=characters,
@@ -223,27 +191,6 @@ class DemoConsole(Console):
         """Return whether output is going to a notebook-like IPython frontend."""
         shell = get_ipython()
         return bool(shell and shell.__class__.__name__ != "TerminalInteractiveShell")
-
-    def _display_via_rich_html(
-        self,
-        render_fn: Any,
-    ) -> None:
-        """Display Rich-rendered HTML with wrap-friendly notebook CSS."""
-        buffer = StringIO()
-        render_console = Console(
-            file=buffer,
-            record=True,
-            force_terminal=False,
-            force_jupyter=False,
-            highlight=False,
-            theme=self._appearance.theme,
-            width=self.width,
-        )
-        render_fn(render_console)
-        html = self._appearance.apply_notebook_html(
-            render_console.export_html(inline_styles=True)
-        )
-        display(HTML(html))
 
     def _normalize_json_text(
         self,

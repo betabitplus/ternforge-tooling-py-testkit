@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from io import StringIO
 
+import rich.jupyter
+
 from py_lib_testkit import DemoConsole
 
 # =============================================================================
@@ -46,3 +48,21 @@ def test_demo_console_print_json_supports_skip_keys() -> None:
     output = buffer.getvalue()
     assert "{" in output
     assert "}" in output
+
+
+def test_demo_console_uses_rich_native_jupyter_backend(monkeypatch) -> None:
+    rendered: list[str] = []
+
+    def capture(_segments, text: str) -> None:
+        rendered.append(text)
+
+    monkeypatch.setattr(rich.jupyter, "display", capture)
+    console = DemoConsole(force_jupyter=True, width=80)
+
+    console.print({"answer": 42})
+    console.rule("[header]Evidence[/]")
+
+    assert len(rendered) == 2
+    assert '"answer"' in rendered[0]
+    assert "42" in rendered[0]
+    assert "Evidence" in rendered[1]

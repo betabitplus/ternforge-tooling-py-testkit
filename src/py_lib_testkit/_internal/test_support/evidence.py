@@ -45,7 +45,7 @@ def _qualified_name(value: object) -> str:
 
 
 def _description(value: object) -> str:
-    """Return documentation authored on the contract itself, never inherited class docs."""
+    """Return contract-authored documentation without inherited class docs."""
     if inspect.isclass(value):
         raw = vars(value).get("__doc__")
     else:

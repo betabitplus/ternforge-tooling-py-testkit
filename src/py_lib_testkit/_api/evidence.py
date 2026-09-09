@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from py_lib_testkit._internal import (
+    publish_contract as _publish_contract,
     publish_file as _publish_file,
     publish_json as _publish_json,
     publish_visual_diff as _publish_visual_diff,
@@ -14,6 +15,11 @@ from py_lib_testkit._internal import (
 def json(name: str, payload: object) -> None:
     """Show and persist one explicitly JSON-serializable evidence value."""
     _publish_json(name, payload)
+
+
+def contract(name: str, value: object) -> None:
+    """Show and persist a contract derived from the live schema class or callable."""
+    _publish_contract(name, value)
 
 
 def file(

@@ -30,6 +30,7 @@ from py_lib_testkit._internal.test_support import (
     parse_data_url as parse_data_url,
     png_pixels_digest as png_pixels_digest,
     png_pixels_signature as png_pixels_signature,
+    publish_contract as publish_contract,
     publish_file as publish_file,
     publish_json as publish_json,
     publish_visual_diff as publish_visual_diff,

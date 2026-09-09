@@ -86,6 +86,57 @@ def test_json_requires_explicitly_serializable_payload(
         evidence.json("Result", {"value": object()})
 
 
+class _FakeSchema:
+    """Small Pydantic-shaped schema provider for contract evidence tests."""
+
+    @classmethod
+    def model_json_schema(cls) -> dict[str, object]:
+        return {
+            "title": cls.__name__,
+            "type": "object",
+            "properties": {"answer": {"type": "integer"}},
+        }
+
+
+def _sample_tool(*, a: int, b: int) -> int:
+    """Add two integers."""
+    return a + b
+
+
+def test_contract_publishes_live_schema_and_callable(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fake = _FakeAllure()
+    _disable_ipython(monkeypatch)
+    monkeypatch.setattr(implementation, "_load_allure", lambda: fake)
+
+    evidence.contract("Response schema", _FakeSchema)
+    evidence.contract("Tool · add", _sample_tool)
+
+    assert len(fake.attach.values) == 2
+    schema_attachment, callable_attachment = fake.attach.values
+    assert (
+        schema_attachment["attachment_type"]
+        == "application/vnd.ternforge.contract+json"
+    )
+    schema = json.loads(str(schema_attachment["body"]))
+    assert schema["kind"] == "schema"
+    assert schema["schema"]["properties"]["answer"] == {"type": "integer"}
+    assert schema["qualified_name"].endswith("._FakeSchema")
+    callable_payload = json.loads(str(callable_attachment["body"]))
+    assert callable_payload["kind"] == "callable"
+    assert callable_payload["signature"] == "(*, a: 'int', b: 'int') -> 'int'"
+    assert callable_payload["description"] == "Add two integers."
+
+
+def test_contract_rejects_unsupported_values(monkeypatch: pytest.MonkeyPatch) -> None:
+    _disable_ipython(monkeypatch)
+    monkeypatch.setattr(implementation, "_load_allure", lambda: None)
+
+    with pytest.raises(TypeError, match="Contract evidence requires"):
+        evidence.contract("Unsupported", object())
+
+
 def test_file_infers_mime_type_and_attaches(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

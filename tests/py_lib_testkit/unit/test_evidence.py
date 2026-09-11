@@ -107,6 +107,44 @@ def _sample_tool(*, a: int, b: int) -> int:
     return a + b
 
 
+def test_observation_publishes_typed_verification_attachment(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fake = _FakeAllure()
+    _disable_ipython(monkeypatch)
+    monkeypatch.setattr(implementation, "_load_allure", lambda: fake)
+
+    evidence.observation(
+        "Provider boundary",
+        kind="external-substitute",
+        payload={"producer": "ScriptedHTTPServer", "boundary": "provider-http"},
+    )
+
+    attachment = fake.attach.values[0]
+    assert attachment["name"] == "Provider boundary"
+    assert (
+        attachment["attachment_type"]
+        == "application/vnd.ternforge.verification-observation+json"
+    )
+    payload = json.loads(str(attachment["body"]))
+    assert payload == {
+        "schema_version": 1,
+        "kind": "external-substitute",
+        "payload": {
+            "producer": "ScriptedHTTPServer",
+            "boundary": "provider-http",
+        },
+    }
+
+
+def test_observation_rejects_empty_kind(monkeypatch: pytest.MonkeyPatch) -> None:
+    _disable_ipython(monkeypatch)
+    monkeypatch.setattr(implementation, "_load_allure", lambda: None)
+
+    with pytest.raises(ValueError, match="kind must be a non-empty string"):
+        evidence.observation("Invalid", kind="  ", payload={})
+
+
 def test_contract_publishes_live_schema_and_callable(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

@@ -14,6 +14,9 @@ from PIL import Image
 
 from py_lib_testkit._internal import (
     DemoConsole as _DemoConsole,
+    RequestRecord as _RequestRecord,
+    ScriptedHTTPServer as _ScriptedHTTPServer,
+    ScriptedResponse as _ScriptedResponse,
     cassette_file_path as _cassette_file_path,
     compare_optional_json_bodies as _compare_optional_json_bodies,
     compare_optional_multipart_single_file_content as _compare_multipart_content,
@@ -42,6 +45,11 @@ from py_lib_testkit._internal import (
     strip_ascii_whitespace as _strip_ascii_whitespace,
     to_bytes as _to_bytes,
 )
+
+RequestRecord = _RequestRecord
+ScriptedHTTPServer = _ScriptedHTTPServer
+ScriptedResponse = _ScriptedResponse
+
 
 # =============================================================================
 # Console Facade

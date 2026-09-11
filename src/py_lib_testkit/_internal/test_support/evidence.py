@@ -20,6 +20,9 @@ from IPython.display import HTML, JSON, FileLink, Image, Video, display
 
 _ALLURE_IMAGE_DIFF = "application/vnd.allure.image.diff"
 _CONTRACT_MEDIA_TYPE = "application/vnd.ternforge.contract+json"
+_VERIFICATION_OBSERVATION_MEDIA_TYPE = (
+    "application/vnd.ternforge.verification-observation+json"
+)
 
 
 def publish_json(name: str, payload: object) -> None:
@@ -83,6 +86,35 @@ def _contract_payload(name: str, value: object) -> dict[str, object]:
         }
     msg = "Contract evidence requires a Pydantic-style schema class or callable"
     raise TypeError(msg)
+
+
+def publish_verification_observation(
+    name: str,
+    *,
+    kind: str,
+    payload: object,
+) -> None:
+    """Publish one structured raw verification observation without interpreting it."""
+    normalized_kind = kind.strip()
+    if not normalized_kind:
+        msg = "Verification observation kind must be a non-empty string"
+        raise ValueError(msg)
+    body = {
+        "schema_version": 1,
+        "kind": normalized_kind,
+        "payload": payload,
+    }
+    encoded = json.dumps(body, indent=2, ensure_ascii=False)
+    if get_ipython() is not None:
+        display(JSON(body, expanded=False))
+    allure = _load_allure()
+    if allure is not None:
+        allure.attach(
+            encoded,
+            name=name,
+            attachment_type=_VERIFICATION_OBSERVATION_MEDIA_TYPE,
+            extension="json",
+        )
 
 
 def publish_contract(name: str, value: object) -> None:

@@ -17,6 +17,9 @@ def _enable_plugin(pytester: pytest.Pytester) -> None:
         [pytest]
         ternforge_traceability = true
         addopts = --strict-markers
+        markers =
+            hermetic: runs fully offline
+            vcr: uses recorded HTTP replay
         """
     )
 
@@ -112,6 +115,50 @@ def test_route_order():
     assert ("layer", "integration") in labels
     assert ("requirement", "REQ_ROUTE_FALLBACK") in labels
     assert ("requirement", "TREQ_ROUTE_ORDER") in labels
+
+
+def test_traced_test_exports_structured_execution_observation(
+    pytester: pytest.Pytester,
+) -> None:
+    _enable_plugin(pytester)
+    pytester.makepyfile(
+        """
+import pytest
+
+@pytest.fixture
+def sample_fixture():
+    return object()
+
+@pytest.mark.verifies("REQ_EXECUTION_CONTEXT[revision==1]")
+@pytest.mark.verification_kind("integration")
+@pytest.mark.hermetic
+def test_execution_context(sample_fixture):
+    assert sample_fixture is not None
+"""
+    )
+    allure_results = pytester.path / "allure-results"
+
+    result = pytester.runpytest_subprocess(f"--alluredir={allure_results}")
+
+    result.assert_outcomes(passed=1)
+    result_file = next(allure_results.glob("*-result.json"))
+    result_payload = json.loads(result_file.read_text(encoding="utf-8"))
+    attachment = next(
+        item
+        for item in result_payload.get("attachments", [])
+        if item.get("type") == "application/vnd.ternforge.verification-observation+json"
+    )
+    source = allure_results / str(attachment["source"])
+    observation = json.loads(source.read_text(encoding="utf-8"))
+    assert observation["schema_version"] == 1
+    assert observation["kind"] == "test-execution"
+    payload = observation["payload"]
+    assert payload["verification_kind"] == "integration"
+    assert payload["path"].endswith(
+        "test_traced_test_exports_structured_execution_observation.py"
+    )
+    assert "sample_fixture" in payload["fixtures"]
+    assert payload["markers"] == ["hermetic"]
 
 
 def test_non_bdd_test_requires_explicit_kind_even_in_named_directory(

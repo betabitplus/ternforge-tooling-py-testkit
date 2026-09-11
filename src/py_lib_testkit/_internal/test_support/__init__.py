@@ -30,7 +30,13 @@ from py_lib_testkit._internal.test_support.evidence import (
     publish_contract as publish_contract,
     publish_file as publish_file,
     publish_json as publish_json,
+    publish_verification_observation as publish_verification_observation,
     publish_visual_diff as publish_visual_diff,
+)
+from py_lib_testkit._internal.test_support.http import (
+    RequestRecord as RequestRecord,
+    ScriptedHTTPServer as ScriptedHTTPServer,
+    ScriptedResponse as ScriptedResponse,
 )
 from py_lib_testkit._internal.test_support.images import (
     image_changed as image_changed,

@@ -7,6 +7,9 @@ from py_lib_testkit._internal.config import (
 )
 from py_lib_testkit._internal.test_support import (
     DemoConsole as DemoConsole,
+    RequestRecord as RequestRecord,
+    ScriptedHTTPServer as ScriptedHTTPServer,
+    ScriptedResponse as ScriptedResponse,
     cassette_file_path as cassette_file_path,
     compare_optional_json_bodies as compare_optional_json_bodies,
     compare_optional_multipart_single_file_content as _compare_multipart_content,
@@ -33,6 +36,7 @@ from py_lib_testkit._internal.test_support import (
     publish_contract as publish_contract,
     publish_file as publish_file,
     publish_json as publish_json,
+    publish_verification_observation as publish_verification_observation,
     publish_visual_diff as publish_visual_diff,
     run_async as run_async,
     save_test_output_image as save_test_output_image,

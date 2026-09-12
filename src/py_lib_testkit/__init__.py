@@ -12,6 +12,9 @@ from py_lib_testkit._api.config import (
 )
 from py_lib_testkit._api.test_support import (
     DemoConsole,
+    RequestRecord,
+    ScriptedHTTPServer,
+    ScriptedResponse,
     cassette_file_path,
     compare_optional_json_bodies,
     compare_optional_multipart_single_file_content,
@@ -50,6 +53,9 @@ except PackageNotFoundError:  # pragma: no cover
 __all__ = [
     "DemoConsole",
     "ProjectToolingConfig",
+    "RequestRecord",
+    "ScriptedHTTPServer",
+    "ScriptedResponse",
     "__version__",
     "cassette_file_path",
     "compare_optional_json_bodies",

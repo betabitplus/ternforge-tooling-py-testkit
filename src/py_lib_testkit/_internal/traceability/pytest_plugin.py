@@ -16,6 +16,10 @@ from typing import Final
 
 import pytest
 
+from py_lib_testkit._internal.test_support.evidence import (
+    publish_verification_observation,
+)
+
 _TRACEABILITY_INI: Final = "ternforge_traceability"
 _VERIFIES_MARKER: Final = "verifies"
 _KIND_MARKER: Final = "verification_kind"
@@ -25,6 +29,7 @@ _BDD_IMPLEMENTATION_ATTACHMENT_NAME: Final = "Ternforge BDD implementation"
 _BDD_IMPLEMENTATION_ATTACHMENT_TYPE: Final = (
     "application/vnd.ternforge.bdd-implementation+json"
 )
+_EXECUTION_MARKERS: Final = ("hermetic", "vcr")
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
@@ -97,6 +102,34 @@ def _trace_item(item: pytest.Item, *, require_trace: bool) -> str | None:
     _set_user_property(item, "verification_kind", kind)
     _export_allure_labels(item, requirements=requirements, kind=kind)
     return None
+
+
+@pytest.hookimpl(trylast=True)
+def pytest_runtest_call(item: pytest.Item) -> None:
+    """Capture objective execution context for traced tests as structured evidence."""
+    if not item.config.pluginmanager.hasplugin("allure_pytest"):
+        return
+    kind = _verification_kind(item)
+    requirements = _requirement_refs(item)
+    if kind is None or not requirements:
+        return
+    path = item.nodeid.split("::", 1)[0]
+    payload = {
+        "nodeid": item.nodeid,
+        "path": path,
+        "verification_kind": kind,
+        "fixtures": sorted(dict.fromkeys(str(name) for name in item.fixturenames)),
+        "markers": [
+            name
+            for name in _EXECUTION_MARKERS
+            if item.get_closest_marker(name) is not None
+        ],
+    }
+    publish_verification_observation(
+        "Ternforge test execution",
+        kind="test-execution",
+        payload=payload,
+    )
 
 
 @pytest.hookimpl(optionalhook=True)

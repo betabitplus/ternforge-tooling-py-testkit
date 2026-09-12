@@ -8,6 +8,7 @@ from py_lib_testkit._internal import (
     publish_contract as _publish_contract,
     publish_file as _publish_file,
     publish_json as _publish_json,
+    publish_verification_observation as _publish_verification_observation,
     publish_visual_diff as _publish_visual_diff,
 )
 
@@ -15,6 +16,16 @@ from py_lib_testkit._internal import (
 def json(name: str, payload: object) -> None:
     """Show and persist one explicitly JSON-serializable evidence value."""
     _publish_json(name, payload)
+
+
+def observation(
+    name: str,
+    *,
+    kind: str,
+    payload: object,
+) -> None:
+    """Persist one structured raw verification observation for downstream analysis."""
+    _publish_verification_observation(name, kind=kind, payload=payload)
 
 
 def contract(name: str, value: object) -> None:

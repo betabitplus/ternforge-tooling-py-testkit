@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.5.0...v2.6.0) (2026-09-12)
+
+
+### Features
+
+* capture boundary interaction evidence ([#143](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/143)) ([0e89844](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/0e898441458fb822730de4cea9d58611c66d623e))
+
 ## [2.5.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.4.1...v2.5.0) (2026-09-12)
 
 

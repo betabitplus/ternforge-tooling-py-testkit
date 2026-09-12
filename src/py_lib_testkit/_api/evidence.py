@@ -28,6 +28,33 @@ def observation(
     _publish_verification_observation(name, kind=kind, payload=payload)
 
 
+def boundary_interaction(
+    *,
+    boundary: str,
+    interaction: str,
+    participant: str,
+    target: str,
+    transport: str = "",
+) -> None:
+    """Persist one objective interaction observed at a verification boundary."""
+    values = {
+        "boundary": boundary.strip(),
+        "interaction": interaction.strip(),
+        "participant": participant.strip(),
+        "target": target.strip(),
+    }
+    missing = tuple(key for key, value in values.items() if not value)
+    if missing:
+        names = ", ".join(missing)
+        msg = f"Boundary interaction requires non-empty values for: {names}"
+        raise ValueError(msg)
+    _publish_verification_observation(
+        f"{values['boundary']} boundary interaction",
+        kind="boundary-interaction",
+        payload={**values, "transport": transport.strip()},
+    )
+
+
 def contract(name: str, value: object) -> None:
     """Show and persist a contract derived from the live schema class or callable."""
     _publish_contract(name, value)

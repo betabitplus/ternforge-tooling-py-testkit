@@ -161,6 +161,43 @@ def test_execution_context(sample_fixture):
     assert payload["markers"] == ["hermetic"]
 
 
+def test_property_execution_captures_public_hypothesis_marker(
+    pytester: pytest.Pytester,
+) -> None:
+    """Hypothesis execution is captured through its documented pytest marker."""
+    _enable_plugin(pytester)
+    pytester.makepyfile(
+        """
+import pytest
+from hypothesis import given, strategies as st
+
+@pytest.mark.verifies("REQ_PROPERTY_EXECUTION[revision==1]")
+@pytest.mark.verification_kind("property")
+@given(value=st.integers(min_value=0, max_value=10))
+def test_property_execution(value):
+    assert 0 <= value <= 10
+"""
+    )
+    allure_results = pytester.path / "allure-results"
+
+    result = pytester.runpytest_subprocess(f"--alluredir={allure_results}")
+
+    result.assert_outcomes(passed=1)
+    result_file = next(allure_results.glob("*-result.json"))
+    result_payload = json.loads(result_file.read_text(encoding="utf-8"))
+    attachment = next(
+        item
+        for item in result_payload.get("attachments", [])
+        if item.get("type") == "application/vnd.ternforge.verification-observation+json"
+    )
+    source = allure_results / str(attachment["source"])
+    observation = json.loads(source.read_text(encoding="utf-8"))
+
+    assert observation["kind"] == "test-execution"
+    assert observation["payload"]["verification_kind"] == "property"
+    assert observation["payload"]["markers"] == ["hypothesis"]
+
+
 def test_non_bdd_test_requires_explicit_kind_even_in_named_directory(
     pytester: pytest.Pytester,
 ) -> None:

@@ -11,6 +11,12 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Self, cast
 from urllib.parse import urlparse
 
+from py_lib_testkit._internal.test_support.evidence import (
+    publish_verification_observation,
+)
+
+_PRODUCER_ID = "PRODUCER_SCRIPTED_HTTP_SERVER"
+
 
 @dataclass(frozen=True, slots=True)
 class ScriptedResponse:
@@ -180,6 +186,11 @@ class ScriptedHTTPServer(AbstractContextManager["ScriptedHTTPServer"]):
 
     def __enter__(self) -> Self:
         """Start the local HTTP server and return this context manager."""
+        publish_verification_observation(
+            f"{_PRODUCER_ID} evidence producer",
+            kind="evidence-producer-use",
+            payload={"producer_id": _PRODUCER_ID},
+        )
         self._server = _Server((self._host, self._port), self._routes)
         self._port = int(self._server.server_address[1])
         self._thread = threading.Thread(

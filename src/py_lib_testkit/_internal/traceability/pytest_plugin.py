@@ -30,6 +30,23 @@ _BDD_IMPLEMENTATION_ATTACHMENT_TYPE: Final = (
     "application/vnd.ternforge.bdd-implementation+json"
 )
 _EXECUTION_MARKERS: Final = ("hermetic", "vcr", "hypothesis")
+_BASE_PRODUCERS: Final = (
+    "PRODUCER_PYTEST",
+    "PRODUCER_PY_TESTKIT",
+    "PRODUCER_ALLURE",
+)
+
+
+def _execution_producer_ids(kind: str, markers: list[str]) -> list[str]:
+    """Return stable producer identities active for this pytest execution."""
+    values = list(_BASE_PRODUCERS)
+    if kind == "bdd":
+        values.append("PRODUCER_PYTEST_BDD")
+    if "hypothesis" in markers:
+        values.append("PRODUCER_HYPOTHESIS")
+    if "vcr" in markers:
+        values.append("PRODUCER_VCR")
+    return values
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
@@ -114,16 +131,16 @@ def pytest_runtest_call(item: pytest.Item) -> None:
     if kind is None or not requirements:
         return
     path = item.nodeid.split("::", 1)[0]
+    markers = [
+        name for name in _EXECUTION_MARKERS if item.get_closest_marker(name) is not None
+    ]
     payload = {
         "nodeid": item.nodeid,
         "path": path,
         "verification_kind": kind,
         "fixtures": sorted(dict.fromkeys(str(name) for name in item.fixturenames)),
-        "markers": [
-            name
-            for name in _EXECUTION_MARKERS
-            if item.get_closest_marker(name) is not None
-        ],
+        "markers": markers,
+        "producer_ids": _execution_producer_ids(kind, markers),
     }
     publish_verification_observation(
         "Ternforge test execution",

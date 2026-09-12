@@ -3,7 +3,10 @@ from __future__ import annotations
 import http.client
 from urllib.parse import urlsplit
 
+import pytest
+
 from py_lib_testkit import ScriptedHTTPServer, ScriptedResponse
+from py_lib_testkit._internal.test_support import http as http_support
 
 
 def _request(
@@ -24,6 +27,29 @@ def _request(
         return response.status, response.read()
     finally:
         connection.close()
+
+
+def test_scripted_http_server_publishes_its_producer_identity(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Using the substitute automatically records its stable producer identity."""
+    captured: list[tuple[str, str, object]] = []
+
+    def capture(name: str, *, kind: str, payload: object) -> None:
+        captured.append((name, kind, payload))
+
+    monkeypatch.setattr(http_support, "publish_verification_observation", capture)
+
+    with ScriptedHTTPServer(port=0, routes={}):
+        pass
+
+    assert captured == [
+        (
+            "PRODUCER_SCRIPTED_HTTP_SERVER evidence producer",
+            "evidence-producer-use",
+            {"producer_id": "PRODUCER_SCRIPTED_HTTP_SERVER"},
+        )
+    ]
 
 
 def test_scripted_http_server_replays_sequence_and_records_requests() -> None:

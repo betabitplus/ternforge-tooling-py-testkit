@@ -145,6 +145,37 @@ def test_observation_rejects_empty_kind(monkeypatch: pytest.MonkeyPatch) -> None
         evidence.observation("Invalid", kind="  ", payload={})
 
 
+def test_producer_publishes_only_stable_identity(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Producer use is raw identity metadata, not an assurance claim."""
+    fake = _FakeAllure()
+    _disable_ipython(monkeypatch)
+    monkeypatch.setattr(implementation, "_load_allure", lambda: fake)
+
+    evidence.producer(" PRODUCER_GOOGLE_FAKE ")
+
+    payload = json.loads(str(fake.attach.values[0]["body"]))
+    assert payload == {
+        "schema_version": 1,
+        "kind": "evidence-producer-use",
+        "payload": {"producer_id": "PRODUCER_GOOGLE_FAKE"},
+    }
+
+
+@pytest.mark.parametrize("producer_id", ["", "google-fake", "PRODUCER_bad-value"])
+def test_producer_rejects_unstable_identity(
+    monkeypatch: pytest.MonkeyPatch,
+    producer_id: str,
+) -> None:
+    """Producer IDs use the graph-stable PRODUCER_ convention."""
+    _disable_ipython(monkeypatch)
+    monkeypatch.setattr(implementation, "_load_allure", lambda: None)
+
+    with pytest.raises(ValueError, match="PRODUCER_"):
+        evidence.producer(producer_id)
+
+
 def test_boundary_interaction_publishes_normalized_raw_fact(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

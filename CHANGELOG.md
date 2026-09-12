@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.7.0...v2.8.0) (2026-09-12)
+
+
+### Features
+
+* capture evidence producer identities ([#147](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/147)) ([9121394](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/91213946ace695a4ac419bfc85e42a2c06f9a8d3))
+
 ## [2.7.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.6.0...v2.7.0) (2026-09-12)
 
 

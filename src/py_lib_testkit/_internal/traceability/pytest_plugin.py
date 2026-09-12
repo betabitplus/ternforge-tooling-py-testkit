@@ -29,7 +29,7 @@ _BDD_IMPLEMENTATION_ATTACHMENT_NAME: Final = "Ternforge BDD implementation"
 _BDD_IMPLEMENTATION_ATTACHMENT_TYPE: Final = (
     "application/vnd.ternforge.bdd-implementation+json"
 )
-_EXECUTION_MARKERS: Final = ("hermetic", "vcr")
+_EXECUTION_MARKERS: Final = ("hermetic", "vcr", "hypothesis")
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:

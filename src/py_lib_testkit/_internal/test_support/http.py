@@ -124,7 +124,7 @@ class _Handler(BaseHTTPRequestHandler):
             body=self._read_body(),
             headers=dict(self.headers.items()),
         )
-        response = cast(_Server, self.server).record_request(record)
+        response = cast("_Server", self.server).record_request(record)
         self._write_response(
             response
             if response is not None

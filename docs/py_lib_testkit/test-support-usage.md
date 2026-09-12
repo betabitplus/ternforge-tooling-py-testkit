@@ -83,7 +83,17 @@ from py_lib_testkit import evidence
 
 evidence.json("Result", result.model_dump(mode="json"))
 evidence.file("Generated video", video_path, media_type="video/mp4")
+
+evidence.boundary_interaction(
+    boundary="provider-http",
+    interaction="substitute",
+    participant="ScriptedHTTPServer",
+    target="live provider",
+    transport="HTTP",
+)
 ```
+
+`boundary_interaction(...)` records an objective runtime fact for downstream assurance analysis. Use an interaction such as `substitute`, `replay`, or `direct` only when that relationship was actually observed by the test. The testkit records and transports the fact; it does not infer an assurance level from the interaction.
 
 ## 1.4 Runnable Examples
 

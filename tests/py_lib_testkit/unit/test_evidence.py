@@ -145,6 +145,54 @@ def test_observation_rejects_empty_kind(monkeypatch: pytest.MonkeyPatch) -> None
         evidence.observation("Invalid", kind="  ", payload={})
 
 
+def test_boundary_interaction_publishes_normalized_raw_fact(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fake = _FakeAllure()
+    _disable_ipython(monkeypatch)
+    monkeypatch.setattr(implementation, "_load_allure", lambda: fake)
+
+    evidence.boundary_interaction(
+        boundary=" provider-http ",
+        interaction=" substitute ",
+        participant=" ScriptedHTTPServer ",
+        target=" live provider ",
+        transport=" HTTP ",
+    )
+
+    payload = json.loads(str(fake.attach.values[0]["body"]))
+    assert payload == {
+        "schema_version": 1,
+        "kind": "boundary-interaction",
+        "payload": {
+            "boundary": "provider-http",
+            "interaction": "substitute",
+            "participant": "ScriptedHTTPServer",
+            "target": "live provider",
+            "transport": "HTTP",
+        },
+    }
+
+
+@pytest.mark.parametrize("field", ["boundary", "interaction", "participant", "target"])
+def test_boundary_interaction_rejects_missing_required_fact(
+    monkeypatch: pytest.MonkeyPatch,
+    field: str,
+) -> None:
+    _disable_ipython(monkeypatch)
+    monkeypatch.setattr(implementation, "_load_allure", lambda: None)
+    values = {
+        "boundary": "provider-http",
+        "interaction": "substitute",
+        "participant": "ScriptedHTTPServer",
+        "target": "live provider",
+    }
+    values[field] = " "
+
+    with pytest.raises(ValueError, match=field):
+        evidence.boundary_interaction(**values)
+
+
 def test_contract_publishes_live_schema_and_callable(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

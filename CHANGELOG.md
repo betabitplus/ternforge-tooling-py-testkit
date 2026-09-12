@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.6.0...v2.7.0) (2026-09-12)
+
+
+### Features
+
+* capture Hypothesis execution marker ([#145](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/145)) ([50bf7d9](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/50bf7d95c7ba3b07c8dcda558fa47c15e696e446))
+
 ## [2.6.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.5.0...v2.6.0) (2026-09-12)
 
 

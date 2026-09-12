@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.4.1...v2.5.0) (2026-09-12)
+
+
+### Features
+
+* capture runtime assurance evidence ([#141](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/141)) ([f2b7a25](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/f2b7a25d3f9a2049b3c1455fd1e7ddfb99ada438))
+
 ## [2.4.1](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.4.0...v2.4.1) (2026-09-09)
 
 

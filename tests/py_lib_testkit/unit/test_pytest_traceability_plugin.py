@@ -159,6 +159,11 @@ def test_execution_context(sample_fixture):
     )
     assert "sample_fixture" in payload["fixtures"]
     assert payload["markers"] == ["hermetic"]
+    assert payload["producer_ids"] == [
+        "PRODUCER_PYTEST",
+        "PRODUCER_PY_TESTKIT",
+        "PRODUCER_ALLURE",
+    ]
 
 
 def test_property_execution_captures_public_hypothesis_marker(
@@ -196,6 +201,12 @@ def test_property_execution(value):
     assert observation["kind"] == "test-execution"
     assert observation["payload"]["verification_kind"] == "property"
     assert observation["payload"]["markers"] == ["hypothesis"]
+    assert observation["payload"]["producer_ids"] == [
+        "PRODUCER_PYTEST",
+        "PRODUCER_PY_TESTKIT",
+        "PRODUCER_ALLURE",
+        "PRODUCER_HYPOTHESIS",
+    ]
 
 
 def test_non_bdd_test_requires_explicit_kind_even_in_named_directory(

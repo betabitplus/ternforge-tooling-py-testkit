@@ -28,6 +28,19 @@ def observation(
     _publish_verification_observation(name, kind=kind, payload=payload)
 
 
+def producer(producer_id: str) -> None:
+    """Persist one declared producer identity without adding assurance meaning."""
+    value = producer_id.strip()
+    if not value.startswith("PRODUCER_") or not value.replace("_", "").isalnum():
+        msg = "Evidence producer IDs must use the PRODUCER_[A-Z0-9_]+ convention"
+        raise ValueError(msg)
+    _publish_verification_observation(
+        f"{value} evidence producer",
+        kind="evidence-producer-use",
+        payload={"producer_id": value},
+    )
+
+
 def boundary_interaction(
     *,
     boundary: str,

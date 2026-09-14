@@ -190,7 +190,7 @@ class ScriptedHTTPServer(AbstractContextManager["ScriptedHTTPServer"]):
         self._server: _Server | None = None
         self._thread: threading.Thread | None = None
         self._observation_lock = threading.Lock()
-        self._producer_observed = False
+        self._first_observed_request: RequestRecord | None = None
 
     def __enter__(self) -> Self:
         """Start the local HTTP server and return this context manager."""
@@ -230,6 +230,7 @@ class ScriptedHTTPServer(AbstractContextManager["ScriptedHTTPServer"]):
             server.server_close()
         if self._thread is not None:
             self._thread.join(timeout=5.0)
+        self._publish_observed_use()
         self._thread = None
         self._server = None
 
@@ -251,20 +252,28 @@ class ScriptedHTTPServer(AbstractContextManager["ScriptedHTTPServer"]):
         return self._server.recorded_requests(method, path)
 
     def _record_observed_request(self, record: RequestRecord) -> None:
-        """Publish producer identity only after the substitute serves a request."""
+        """Remember the first request without publishing from the server thread."""
         with self._observation_lock:
-            if self._producer_observed:
+            if self._first_observed_request is not None:
                 return
-            self._producer_observed = True
+            self._first_observed_request = record
+
+    def _publish_observed_use(self) -> None:
+        """Publish observed-use evidence from the owning test thread during teardown."""
+        with self._observation_lock:
+            record = self._first_observed_request
+            self._first_observed_request = None
+        if record is None:
+            return
         publish_verification_observation(
             f"{_PRODUCER_ID} evidence producer",
             kind="evidence-producer-use",
             payload={"producer_id": _PRODUCER_ID},
         )
-        self._on_first_request(record)
+        self._on_observed_use(record)
 
-    def _on_first_request(self, record: RequestRecord) -> None:
-        """Allow consumer-specific substitutes to publish facts from actual use."""
+    def _on_observed_use(self, record: RequestRecord) -> None:
+        """Allow consumers to publish request-derived facts from the owning thread."""
         _ = record
 
     def _wakeup_server(self) -> None:

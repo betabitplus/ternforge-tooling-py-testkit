@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import http.client
+import threading
 from urllib.parse import urlsplit
 
 import pytest
@@ -32,11 +33,12 @@ def _request(
 def test_scripted_http_server_publishes_identity_only_after_actual_request(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """Configured substitutes do not count as used until one request is received."""
-    captured: list[tuple[str, str, object]] = []
+    """Observed-use evidence is delayed until teardown on the owning test thread."""
+    captured: list[tuple[str, str, object, int]] = []
+    test_thread = threading.get_ident()
 
     def capture(name: str, *, kind: str, payload: object) -> None:
-        captured.append((name, kind, payload))
+        captured.append((name, kind, payload, threading.get_ident()))
 
     monkeypatch.setattr(http_support, "publish_verification_observation", capture)
 
@@ -47,12 +49,14 @@ def test_scripted_http_server_publishes_identity_only_after_actual_request(
         assert captured == []
         assert _request(server.base_url, "GET", "/used") == (200, b"ok")
         assert _request(server.base_url, "GET", "/used") == (200, b"ok")
+        assert captured == []
 
     assert captured == [
         (
             "PRODUCER_SCRIPTED_HTTP_SERVER evidence producer",
             "evidence-producer-use",
             {"producer_id": "PRODUCER_SCRIPTED_HTTP_SERVER"},
+            test_thread,
         )
     ]
 

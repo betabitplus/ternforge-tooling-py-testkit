@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.1](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.8.0...v2.8.1) (2026-09-14)
+
+
+### Bug Fixes
+
+* record scripted HTTP producer after observed use ([#149](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/149)) ([7a83e29](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/7a83e29626d60e323e4d8ef0e17599e844539799))
+
 ## [2.8.0](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.7.0...v2.8.0) (2026-09-12)
 
 

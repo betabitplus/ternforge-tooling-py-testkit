@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.2](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.8.1...v2.8.2) (2026-09-14)
+
+
+### Bug Fixes
+
+* publish scripted HTTP evidence from test thread ([#151](https://github.com/betabitplus/ternforge-tooling-py-testkit/issues/151)) ([751dd5e](https://github.com/betabitplus/ternforge-tooling-py-testkit/commit/751dd5efe0be524c4a28de5a28a8d856301289c7))
+
 ## [2.8.1](https://github.com/betabitplus/ternforge-tooling-py-testkit/compare/v2.8.0...v2.8.1) (2026-09-14)
 
 

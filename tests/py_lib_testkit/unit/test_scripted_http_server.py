@@ -29,10 +29,10 @@ def _request(
         connection.close()
 
 
-def test_scripted_http_server_publishes_its_producer_identity(
+def test_scripted_http_server_publishes_identity_only_after_actual_request(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """Using the substitute automatically records its stable producer identity."""
+    """Configured substitutes do not count as used until one request is received."""
     captured: list[tuple[str, str, object]] = []
 
     def capture(name: str, *, kind: str, payload: object) -> None:
@@ -40,8 +40,13 @@ def test_scripted_http_server_publishes_its_producer_identity(
 
     monkeypatch.setattr(http_support, "publish_verification_observation", capture)
 
-    with ScriptedHTTPServer(port=0, routes={}):
-        pass
+    routes = {
+        ("GET", "/used"): [ScriptedResponse(status_code=200, body=b"ok")],
+    }
+    with ScriptedHTTPServer(port=0, routes=routes) as server:
+        assert captured == []
+        assert _request(server.base_url, "GET", "/used") == (200, b"ok")
+        assert _request(server.base_url, "GET", "/used") == (200, b"ok")
 
     assert captured == [
         (

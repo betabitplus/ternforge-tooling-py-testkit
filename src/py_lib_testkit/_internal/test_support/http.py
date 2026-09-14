@@ -5,6 +5,7 @@ from __future__ import annotations
 import socket
 import threading
 import time
+from collections.abc import Callable
 from contextlib import AbstractContextManager, suppress
 from dataclasses import dataclass, field
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -68,6 +69,7 @@ class _Server(ThreadingHTTPServer):
         self,
         server_address: tuple[str, int],
         routes: dict[tuple[str, str], list[ScriptedResponse]],
+        on_request: Callable[[RequestRecord], None],
     ) -> None:
         """Initialize route state and the shared request-record lock."""
         super().__init__(server_address, _Handler)
@@ -76,6 +78,7 @@ class _Server(ThreadingHTTPServer):
             for (method, path), responses in routes.items()
         }
         self._lock = threading.RLock()
+        self._on_request = on_request
 
     def record_request(self, record: RequestRecord) -> ScriptedResponse | None:
         """Record one request and return its scripted response when configured."""
@@ -83,9 +86,12 @@ class _Server(ThreadingHTTPServer):
         with self._lock:
             route = self.routes.get(key)
             if route is None:
-                return None
-            route.records.append(record)
-            return route.next_response()
+                response = None
+            else:
+                route.records.append(record)
+                response = route.next_response()
+        self._on_request(record)
+        return response
 
     def request_count(self, method: str, path: str) -> int:
         """Return captured request count for one route."""
@@ -183,15 +189,16 @@ class ScriptedHTTPServer(AbstractContextManager["ScriptedHTTPServer"]):
         self._routes = routes
         self._server: _Server | None = None
         self._thread: threading.Thread | None = None
+        self._observation_lock = threading.Lock()
+        self._producer_observed = False
 
     def __enter__(self) -> Self:
         """Start the local HTTP server and return this context manager."""
-        publish_verification_observation(
-            f"{_PRODUCER_ID} evidence producer",
-            kind="evidence-producer-use",
-            payload={"producer_id": _PRODUCER_ID},
+        self._server = _Server(
+            (self._host, self._port),
+            self._routes,
+            self._record_observed_request,
         )
-        self._server = _Server((self._host, self._port), self._routes)
         self._port = int(self._server.server_address[1])
         self._thread = threading.Thread(
             target=self._server.serve_forever,
@@ -242,6 +249,23 @@ class ScriptedHTTPServer(AbstractContextManager["ScriptedHTTPServer"]):
         if self._server is None:
             return []
         return self._server.recorded_requests(method, path)
+
+    def _record_observed_request(self, record: RequestRecord) -> None:
+        """Publish producer identity only after the substitute serves a request."""
+        with self._observation_lock:
+            if self._producer_observed:
+                return
+            self._producer_observed = True
+        publish_verification_observation(
+            f"{_PRODUCER_ID} evidence producer",
+            kind="evidence-producer-use",
+            payload={"producer_id": _PRODUCER_ID},
+        )
+        self._on_first_request(record)
+
+    def _on_first_request(self, record: RequestRecord) -> None:
+        """Allow consumer-specific substitutes to publish facts from actual use."""
+        _ = record
 
     def _wakeup_server(self) -> None:
         """Wake the serve_forever loop so shutdown can complete promptly."""
